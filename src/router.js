@@ -1,12 +1,12 @@
 import React from 'react';
 import { Router, Route, Switch } from 'dva/router';
-import Home from './routes/home';
+import Contact from './routes/contact';
 
 function RouterConfig({ history }) {
   return (
     <Router history={history}>
       <Switch>
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact component={Contact} />
       </Switch>
     </Router>
   );

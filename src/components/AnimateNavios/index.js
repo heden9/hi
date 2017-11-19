@@ -38,10 +38,18 @@ class AnimateNavios extends React.PureComponent {
   }
   render() {
     const { nowPos, turnning } = this.state;
-    const { mainView, subView, needNav } = this.props;
+    const { mainView, subView, needNav, headerTitle } = this.props;
     return (
       <div className="pages-body">
-        {needNav && <Navigator {...this.state} open={this.open} title2={this.title2} />}
+        {
+          needNav &&
+          <Navigator
+            {...this.state}
+            title={headerTitle}
+            open={this.open}
+            title2={this.title2}
+          />
+        }
         <div className="pages-container">
           <div
             className={className({
@@ -64,7 +72,7 @@ class AnimateNavios extends React.PureComponent {
                 'page-from-center-to-right': nowPos === 'page2' && turnning,
                 'page-from-right-to-center': nowPos !== 'page2' && turnning,
               })}
-            >{subView}</div>
+            >{ /* nowPos === 'page2' && */ subView}</div>
           }
         </div>
       </div>
@@ -75,6 +83,7 @@ AnimateNavios.propTypes = {
   mainView: PropTypes.element,
   subView: PropTypes.element,
   needNav: PropTypes.bool,
+  headerTitle: PropTypes.string,
   // onChange: PropTypes.func,
 };
 
