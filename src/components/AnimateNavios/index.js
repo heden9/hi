@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import className from 'classnames';
-import './IndexPage.less';
-import './test.less';
+import './style.less';
+import './plus.less';
 
-class AnimateIosNav extends React.PureComponent {
+class AnimateNavios extends React.PureComponent {
   static defaultProps = {
     needNav: true,
   };
@@ -14,7 +14,7 @@ class AnimateIosNav extends React.PureComponent {
     title2: '',
   };
   componentDidMount() {
-    AnimateIosNav.openFunc = this.open;
+    AnimateNavios.openFunc = this.open;
   }
   componentWillUnmount() {
     clearTimeout(this.timer);
@@ -71,7 +71,7 @@ class AnimateIosNav extends React.PureComponent {
     );
   }
 }
-AnimateIosNav.propTypes = {
+AnimateNavios.propTypes = {
   mainView: PropTypes.element,
   subView: PropTypes.element,
   needNav: PropTypes.bool,
@@ -120,4 +120,4 @@ function Navigator(props) {
     </div>
   );
 }
-export default AnimateIosNav;
+export default AnimateNavios;
