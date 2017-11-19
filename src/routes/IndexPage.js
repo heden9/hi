@@ -1,21 +1,123 @@
 import React from 'react';
-import { connect } from 'dva';
-import styles from './IndexPage.css';
+import PropTypes from 'prop-types';
+import className from 'classnames';
+import './IndexPage.less';
+import './test.less';
 
-function IndexPage() {
+class AnimateIosNav extends React.PureComponent {
+  static defaultProps = {
+    needNav: true,
+  };
+  state = {
+    nowPos: 'page1',
+    turnning: false,
+    title2: '',
+  };
+  componentDidMount() {
+    AnimateIosNav.openFunc = this.open;
+  }
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
+  open = (settings) => {
+    if (this.state.turnning) {
+      return;
+    }
+    if (settings.title) {
+      this.title2 = settings.title;
+    }
+    this.setState({
+      turnning: true,
+    });
+    this.timer = setTimeout(() => {
+      this.setState({
+        nowPos: this.state.nowPos === 'page1' ? 'page2' : 'page1',
+        turnning: false,
+      });
+    }, 400);
+  }
+  render() {
+    const { nowPos, turnning } = this.state;
+    const { mainView, subView, needNav } = this.props;
+    return (
+      <div className="pages-body">
+        {needNav && <Navigator {...this.state} open={this.open} title2={this.title2} />}
+        <div className="pages-container">
+          <div
+            className={className({
+              page: true,
+              blank: true,
+              'page-on-left': nowPos !== 'page1',
+              'page-on-center': nowPos === 'page1',
+              'page-from-center-to-left': nowPos === 'page1' && turnning,
+              'page-from-left-to-center': nowPos !== 'page1' && turnning,
+            })}
+          >{mainView}</div>
+          {
+            (nowPos === 'page2' || turnning) &&
+            <div
+              className={className({
+                'blank-2': true,
+                page: true,
+                'page-on-right': nowPos !== 'page2',
+                'page-on-center': nowPos === 'page2',
+                'page-from-center-to-right': nowPos === 'page2' && turnning,
+                'page-from-right-to-center': nowPos !== 'page2' && turnning,
+              })}
+            >{subView}</div>
+          }
+        </div>
+      </div>
+    );
+  }
+}
+AnimateIosNav.propTypes = {
+  mainView: PropTypes.element,
+  subView: PropTypes.element,
+  needNav: PropTypes.bool,
+  // onChange: PropTypes.func,
+};
+
+
+function Navigator(props) {
+  const { title = 'nav', title2 = 'nav2', nowPos, turnning, open } = props;
   return (
-    <div className={styles.normal}>
-      <h1 className={styles.title}>Yay! Welcome to dva!</h1>
-      <div className={styles.welcome} />
-      <ul className={styles.list}>
-        <li>To get started, edit <code>src/index.js</code> and save to reload.</li>
-        <li><a href="https://github.com/dvajs/dva-docs/blob/master/v1/en-us/getting-started.md">Getting Started</a></li>
-      </ul>
+    <div
+      className={className({
+        'nav-container': true,
+      })}
+    >
+      <div
+        className={className({
+          'nav-title': true,
+          'navbar-on-left': nowPos === 'page2',
+          'navbar-from-left-to-center': nowPos !== 'page1' && turnning,
+          'navbar-from-center-to-left': nowPos === 'page1' && turnning,
+        })}
+      >
+        <span className="nav-btn" />
+        <span>{title}</span>
+        <span className="nav-btn" />
+      </div>
+      {
+        (nowPos === 'page2' || turnning) &&
+        <div
+          className={className({
+            'nav-title': true,
+            'navbar-on-right': nowPos === 'page1',
+            'navbar-from-right-to-center': nowPos !== 'page2' && turnning,
+            'navbar-from-center-to-right': nowPos === 'page2' && turnning,
+          })}
+        >
+          <span className="nav-btn" onClick={open}>
+            <i className="back-icon" />
+            <span>返回</span>
+          </span>
+          <span>{title2}</span>
+          <span className="nav-btn" />
+        </div>
+      }
     </div>
   );
 }
-
-IndexPage.propTypes = {
-};
-
-export default connect()(IndexPage);
+export default AnimateIosNav;
