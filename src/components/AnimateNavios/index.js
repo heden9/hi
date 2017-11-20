@@ -7,72 +7,101 @@ import './plus.less';
 class AnimateNavios extends React.PureComponent {
   static defaultProps = {
     needNav: true,
+    classname: '',
+    routes: {},
+    mainTitle: {},
   };
+  constructor(...arg) {
+    super(...arg);
+    this.subViewData = {};
+  }
   state = {
     nowPos: 'page1',
-    turnning: false,
+    turning: false,
     title2: '',
   };
   componentDidMount() {
-    AnimateNavios.openFunc = this.open;
+    AnimateNavios.openFunc = this.openHandle;
   }
   componentWillUnmount() {
     clearTimeout(this.timer);
   }
-  open = (settings) => {
-    if (this.state.turnning) {
+
+  /**
+   * 切换
+   */
+  toggle = () => {
+    if (this.state.turning) {
       return;
     }
-    if (settings.title) {
-      this.title2 = settings.title;
-    }
     this.setState({
-      turnning: true,
+      turning: true,
     });
     this.timer = setTimeout(() => {
       this.setState({
         nowPos: this.state.nowPos === 'page1' ? 'page2' : 'page1',
-        turnning: false,
+        turning: false,
       });
     }, 400);
-  }
+  };
+  /**
+   * 打开
+   * @param settings
+   */
+  openHandle = (url, options = {}) => {
+    this.subViewData = { ...this.props.routes[url] };
+    if (options.title) {
+      this.subViewData.title = options.title;
+    }
+    this.toggle();
+  };
+  renderSubView = (subViewData) => {
+    if (subViewData) {
+      return (
+        subViewData.component
+      );
+    }
+  };
   render() {
-    const { nowPos, turnning } = this.state;
-    const { mainView, subView, needNav, headerTitle } = this.props;
+    const { nowPos, turning } = this.state;
+    const { needNav, classname, children, location: { pathname }, mainTitle } = this.props;
     return (
       <div className="pages-body">
         {
           needNav &&
           <Navigator
             {...this.state}
-            title={headerTitle}
-            open={this.open}
-            title2={this.title2}
+            classname={classname}
+            config={mainTitle[pathname.substr(1, 10)]}
+            subViewData={this.subViewData}
+            close={this.toggle}
           />
         }
         <div className="pages-container">
           <div
             className={className({
               page: true,
-              blank: true,
+              // blank: true,
               'page-on-left': nowPos !== 'page1',
               'page-on-center': nowPos === 'page1',
-              'page-from-center-to-left': nowPos === 'page1' && turnning,
-              'page-from-left-to-center': nowPos !== 'page1' && turnning,
+              'page-from-center-to-left': nowPos === 'page1' && turning,
+              'page-from-left-to-center': nowPos !== 'page1' && turning,
             })}
-          >{mainView}</div>
+          >{children}</div>
           {
-            (nowPos === 'page2' || turnning) &&
+            (nowPos === 'page2' || turning) &&
             <div
               className={className({
-                'blank-2': true,
+                // 'blank-2': true,
                 page: true,
-                'page-on-right': nowPos !== 'page2',
+                'page-on-right': nowPos === 'page1',
                 'page-on-center': nowPos === 'page2',
-                'page-from-center-to-right': nowPos === 'page2' && turnning,
-                'page-from-right-to-center': nowPos !== 'page2' && turnning,
+                'page-from-center-to-right': nowPos === 'page2' && turning,
+                'page-from-right-to-center': nowPos !== 'page2' && turning,
               })}
-            >{ /* nowPos === 'page2' && */ subView}</div>
+            >
+              {this.renderSubView(this.subViewData)}
+            </div>
           }
         </div>
       </div>
@@ -80,28 +109,32 @@ class AnimateNavios extends React.PureComponent {
   }
 }
 AnimateNavios.propTypes = {
-  mainView: PropTypes.element,
-  subView: PropTypes.element,
   needNav: PropTypes.bool,
-  headerTitle: PropTypes.string,
+  classname: PropTypes.string,
+  routes: PropTypes.object,
+  mainTitle: PropTypes.object,
+  children: PropTypes.element,
   // onChange: PropTypes.func,
 };
 
 
 function Navigator(props) {
-  const { title = 'nav', title2 = 'nav2', nowPos, turnning, open } = props;
+  const { config = {}, nowPos, subViewData, turning, close, classname } = props;
+  const { title = 'nav' } = config;
+  const { title: title2 } = subViewData;
   return (
     <div
       className={className({
         'nav-container': true,
+        [classname]: true,
       })}
     >
       <div
         className={className({
           'nav-title': true,
-          'navbar-on-left': nowPos === 'page2',
-          'navbar-from-left-to-center': nowPos !== 'page1' && turnning,
-          'navbar-from-center-to-left': nowPos === 'page1' && turnning,
+          'navbar-on-left': nowPos !== 'page1',
+          'navbar-from-left-to-center': nowPos !== 'page1' && turning,
+          'navbar-from-center-to-left': nowPos === 'page1' && turning,
         })}
       >
         <span className="nav-btn" />
@@ -109,16 +142,16 @@ function Navigator(props) {
         <span className="nav-btn" />
       </div>
       {
-        (nowPos === 'page2' || turnning) &&
+        (nowPos === 'page2' || turning) &&
         <div
           className={className({
             'nav-title': true,
             'navbar-on-right': nowPos === 'page1',
-            'navbar-from-right-to-center': nowPos !== 'page2' && turnning,
-            'navbar-from-center-to-right': nowPos === 'page2' && turnning,
+            'navbar-from-right-to-center': nowPos !== 'page2' && turning,
+            'navbar-from-center-to-right': nowPos === 'page2' && turning,
           })}
         >
-          <span className="nav-btn" onClick={open}>
+          <span className="nav-btn" onClick={close}>
             <i className="back-icon" />
             <span>返回</span>
           </span>
