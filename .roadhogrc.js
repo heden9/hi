@@ -10,7 +10,7 @@ const svgSpriteDirs = [
 export default {
   entry : {
     app: "./src/index.js",
-    vendor: "./src/vendor.js"
+    common: "./src/vendor.js"
   } ,
   hash: true,
   multipage: true,
@@ -20,7 +20,7 @@ export default {
     '@hd': '2px',
   },
   disableCSSModules : true ,
-  publicPath : "/" ,
+  publicPath : "./" ,
   svgSpriteLoaderDirs : svgSpriteDirs ,
   autoprefixer : {
     browsers : [
@@ -40,7 +40,7 @@ export default {
       rootValue : 100 ,
       propWhiteList : [] ,
     } ) ,
-  ] ,
+  ],
   // style 必须是 true
   extraBabelPlugins : [
     "transform-runtime" ,
@@ -50,7 +50,7 @@ export default {
         { libraryName : "antd-mobile" , "libraryDirectory" : "lib" , "style" : true },
       ]
     ]
-  ] ,
+  ],
   env : {
     development : {
       extraBabelPlugins : [

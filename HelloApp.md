@@ -319,7 +319,7 @@
     "data": [
         {
             "id": 3,
-            "headimgurl": "头像url",
+            "headImgUrl": "头像url",
             "nickname": "用户昵称"
         }
     ]

@@ -19,6 +19,7 @@
     "react-dom": "^16.1.1"
   },
   "devDependencies": {
+    "antd-mobile-demo-data": "^0.1.4",
     "babel-eslint": "^7.1.1",
     "babel-plugin-dva-hmr": "^0.3.2",
     "babel-plugin-import": "^1.6.2",
@@ -31,6 +32,7 @@
     "expect": "^1.20.2",
     "husky": "^0.12.0",
     "postcss-pxtorem": "^4.0.1",
+    "react-sticky": "^6.0.1",
     "redbox-react": "^1.4.3",
     "roadhog": "^1.2.1"
   }

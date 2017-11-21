@@ -51,4 +51,7 @@ const mainTitleConfig = {
   home: {
     title: '动态',
   },
+  map: {
+    title: '地图',
+  },
 };

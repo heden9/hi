@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'dva';
 import { TabBar } from 'antd-mobile';
 import { routerRedux } from 'dva/router';
+import Icon from '../components/icon';
+import Home from '../routes/home';
 
 function App({ children, location: { pathname }, dispatch }) {
   const pressHandle = (selected) => {
@@ -18,33 +20,33 @@ function App({ children, location: { pathname }, dispatch }) {
         title="动态"
         onPress={() => { pressHandle('/home'); }}
         selected={pathname === '/home'}
-        icon={{ uri: 'https://zos.alipayobjects.com/rmsportal/asJMfBrNqpMMlVpeInPQ.svg' }}
-        selectedIcon={{ uri: 'https://zos.alipayobjects.com/rmsportal/gjpzzcrPMkhfEqgbYvmN.svg' }}
-      >{children}</TabBar.Item>
-      <TabBar.Item
-        key={'/contact'}
-        title="联系人"
-        onPress={() => { pressHandle('/contact'); }}
-        selected={pathname === '/contact'}
-        icon={{ uri: 'https://zos.alipayobjects.com/rmsportal/asJMfBrNqpMMlVpeInPQ.svg' }}
-        selectedIcon={{ uri: 'https://zos.alipayobjects.com/rmsportal/gjpzzcrPMkhfEqgbYvmN.svg' }}
-      >{children}</TabBar.Item>
+        icon={<Icon type={require('../assets/icon/home.svg')} />}
+        selectedIcon={<Icon type={require('../assets/icon/home_fill.svg')} />}
+      ><Home /></TabBar.Item>
       <TabBar.Item
         key={'/map'}
         title="地图"
         onPress={() => { pressHandle('/map'); }}
         selected={pathname === '/map'}
-        icon={{ uri: 'https://zos.alipayobjects.com/rmsportal/asJMfBrNqpMMlVpeInPQ.svg' }}
-        selectedIcon={{ uri: 'https://zos.alipayobjects.com/rmsportal/gjpzzcrPMkhfEqgbYvmN.svg' }}
-      >{children}</TabBar.Item>
+        icon={<Icon type={require('../assets/icon/location.svg')} />}
+        selectedIcon={<Icon type={require('../assets/icon/location_fill.svg')} />}
+      >{pathname === '/map' && children}</TabBar.Item>
+      <TabBar.Item
+        key={'/contact'}
+        title="联系人"
+        onPress={() => { pressHandle('/contact'); }}
+        selected={pathname === '/contact'}
+        icon={<Icon type={require('../assets/icon/message.svg')} />}
+        selectedIcon={<Icon type={require('../assets/icon/message_fill.svg')} />}
+      >{pathname === '/contact' && children}</TabBar.Item>
       <TabBar.Item
         key={'/mine'}
         title="我的"
         onPress={() => { pressHandle('/mine'); }}
         selected={pathname === '/mine'}
-        icon={{ uri: 'https://zos.alipayobjects.com/rmsportal/asJMfBrNqpMMlVpeInPQ.svg' }}
-        selectedIcon={{ uri: 'https://zos.alipayobjects.com/rmsportal/gjpzzcrPMkhfEqgbYvmN.svg' }}
-      >{children}</TabBar.Item>
+        icon={<Icon type={require('../assets/icon/my.svg')} />}
+        selectedIcon={<Icon type={require('../assets/icon/my_fill.svg')} />}
+      >{pathname === '/mine' && children}</TabBar.Item>
     </TabBar>
   );
 }
@@ -54,6 +56,16 @@ function mapStateToProps() {
 
   });
 }
+class tmpApp extends React.PureComponent {
+  componentDidMount() {
 
 
-export default connect(mapStateToProps)(App);
+  }
+  render() {
+    return (
+      <App {...this.props} />
+    );
+  }
+}
+
+export default connect(mapStateToProps)(tmpApp);

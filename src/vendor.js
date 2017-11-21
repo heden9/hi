@@ -2,4 +2,4 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import dva from 'dva';
-import { Button } from 'antd-mobile';
+import { Button, TabBar } from 'antd-mobile';

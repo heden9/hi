@@ -2,10 +2,29 @@
 html, body, :global(#root) {
   height: 100%;
   -webkit-overflow-scrolling: touch;
-
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  overflow-y: auto;
 
   .global-nav{
     background: @primary-color;
   }
+  .am-tabs-tab-bar-wrap {
 
+  }
+}
+body{
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+*{
+  &::-webkit-scrollbar {
+    height: 0;
+    overflow: visible;
+    width: 0;
+  }
 }
