@@ -4,36 +4,30 @@
 
 - [1. HelloApp-V1.0-API](#1-helloapp-v10-api)
   - [1.1. tips](#11-tips)
-  - [1.2. 动态页](#12-动态页)
-    - [1.2.1. 获取动态](#121-获取动态)
-  - [1.3. 动态管理](#13-动态管理)
-    - [1.3.1. 获取单条动态](#131-获取单条动态)
-    - [1.3.2. 发布动态](#132-发布动态)
-    - [1.3.3. 编辑动态](#133-编辑动态)
-    - [1.3.4. 删除动态](#134-删除动态)
-  - [1.4. 用户账号](#14-用户账号)
-    - [1.4.1. 登录](#141-登录)
-    - [1.4.1. 注册](#142-注册)
-  - [1.5. 评论管理](#15-评论管理)
-    - [1.5.1. 获取评论](#151-获取评论)
-    - [1.5.2. 发布评论](#152-发布评论)
-    - [1.5.3. 删除评论](#153-删除评论)
-  - [1.6. 用户管理](#16-用户管理)
-    - [1.6.1. 搜索用户](#161-搜索用户)
-  - [1.7. 关注管理](#17-关注管理)
-    - [1.7.1. 获取关注列表](#171-获取关注列表)
-    - [1.7.2. 关注用户](#172-关注用户)
-    - [1.7.3. 取消关注](#173-取消关注)
-  - [1.8. 图片管理](#18-图片管理)
-    - [1.8.3. 获取图片信息](#183-获取图片信息)
-    - [1.8.1. 上传图片](#181-上传图片)
-    - [1.8.2. 删除图片](#182-删除图片)
-  - [1.9. 动态点赞](#19-动态点赞)
-    - [1.9.1. 点赞](#191-点赞)
-    - [1.9.2. 取消点赞](#192-取消点赞)
-  - [1.10. 评论点赞](#110-评论点赞)
-    - [1.10.1. 点赞](#1101-点赞)
-    - [1.10.2. 取消点赞](#1102-取消点赞)
+  - [1.2. 动态页](#12)
+    - [1.2.1. 获取动态](#121)
+  - [1.3. 动态管理](#13)
+    - [1.3.1. 获取单条动态](#131)
+    - [1.3.2. 发布动态](#132)
+    - [1.3.3. 编辑动态](#133)
+    - [1.3.4. 删除动态](#134)
+  - [1.4. 用户账号](#14)
+    - [1.4.1. 登录](#141)
+    - [1.4.1. 注册](#142)
+  - [1.5. 评论管理](#15)
+    - [1.5.1. 获取评论](#151)
+    - [1.5.2. 发布评论](#152)
+    - [1.5.3. 删除评论](#153)
+  - [1.6. 用户管理](#16)
+    - [1.6.1. 搜索用户](#161)
+  - [1.7. 关注管理](#17)
+    - [1.7.1. 获取关注列表](#171)
+    - [1.7.2. 关注用户](#172)
+    - [1.7.3. 取消关注](#173)
+  - [1.8. 图片管理](#18)
+    - [1.8.3. 获取图片信息](#183)
+    - [1.8.1. 上传图片](#181)
+    - [1.8.2. 删除图片](#182)
 
 <!-- /TOC -->
 
@@ -51,10 +45,10 @@
 
 ### 1.2.1. 获取动态
 
-- GET /dynamic_pages/{lastId}
-- return :
-  - is_whole: brief是否显示完整
-  - is_like: 是否点赞
+- GET /dynamics_pages/{lastId}
+- return:
+  - whole: brief是否显示完整
+
 ```json
 {
     "code": 0,
@@ -62,16 +56,15 @@
     "data": [
         {
             "id": 3,
-            "headImgUrl": "头像url",
+            "headimgurl": "头像url",
             "nickname": "用户昵称",
             "brief": "简略动态",
-            "is_whole": true,
+            "whole": true,
             "img": [
                 "图片1url",
                 "图片2url"
             ],
             "comment_num": 23,
-            "is_like": false,
             "like_num": 541,
             "last_id": 23
         }
@@ -88,13 +81,14 @@
 - GET /dynamics/{id}
 - return :
   - payload :
+
 ```json
 {
     "code": 0,
     "message": "",
     "data": {
         "id": 3,
-        "headImgUrl": "头像url",
+        "headimgurl": "头像url",
         "nickname": "用户昵称",
         "content": "动态内容",
         "img": [
@@ -102,7 +96,6 @@
             "图片2url"
         ],
         "comment_num": 23,
-        "is_like": false,
         "like_num": 541
     }
 }
@@ -123,6 +116,7 @@
 ```
 - return :
   - data : 动态id
+
 ```json
 {
     "code": 0,
@@ -145,6 +139,7 @@
 }
 ```
 - return :
+
 ```json
 {
     "code": 0,
@@ -160,6 +155,7 @@
 - DELETE /dynamics/{id}
 
 - return :
+
 ```json
 {
     "code": 0,
@@ -176,6 +172,7 @@
 
 - POST /login
 - payload :
+
 ```json
 {
     "username": "2015111363",
@@ -184,13 +181,14 @@
 ```
 
 - return :
+
 ```json
 {
     "code": 0,
     "message": "",
     "data": {
         "id": 3,
-        "headImgUrl": "头像url",
+        "headimgurl": "头像url",
         "nickname": "用户昵称"
     }
 }
@@ -209,6 +207,7 @@
 ```
 
 - return :
+
 ```json
 {
     "code": 0,
@@ -223,9 +222,10 @@
 
 ### 1.5.1. 获取评论
 
-- GET /comments/{dynamic_id}
+- GET /comments/{dynamics_id}
 - return :
   - p_comment : 父级评论id
+
 ```json
 {
     "code": 0,
@@ -236,8 +236,7 @@
             "content": "评论内容",
             "p_comment": 0
         }
-    ],
-    "is_like": true
+    ]
 }
 ```
 
@@ -245,8 +244,9 @@
 
 ### 1.5.2. 发布评论
 
-- POST /comments/{dynamic_id}
+- POST /comments/{dynamics_id}
 - payload :
+
 ```json
 {
     "content": "评论内容",
@@ -256,6 +256,7 @@
 
 - return :
   - data : 评论id
+
 ```json
     "code": 0,
     "message": "",
@@ -268,6 +269,7 @@
 
 - DELETE /comments/{comment_id}
 - return :
+
 ```json
 {
     "code": 0,
@@ -285,6 +287,7 @@
 - GET /users?
   - search : 搜索内容
 - return :
+
 ```json
 {
     "code": 0,
@@ -292,7 +295,7 @@
     "data": [
         {
             "id": 3,
-            "headImgUrl": "头像url",
+            "headimgurl": "头像url",
             "nickname": "用户昵称"
         }
     ]
@@ -308,6 +311,7 @@
 - GET /follows
 
 - return :
+
 ```json
 {
     "code": 0,
@@ -315,7 +319,7 @@
     "data": [
         {
             "id": 3,
-            "headImgUrl": "头像url",
+            "headimgurl": "头像url",
             "nickname": "用户昵称"
         }
     ]
@@ -328,6 +332,7 @@
 
 - POST /follows/{user_id}
 - return :
+
 ```json
 {
     "code": 0,
@@ -342,6 +347,7 @@
 
 - DELETE /follows/{user_id}
 - return :
+
 ```json
 {
     "code": 0,
@@ -358,6 +364,7 @@
 
 - GET /pics/{pic_id}
 - return :
+
 ```json
     "code": 0,
     "message": "",
@@ -371,8 +378,9 @@
 ### 1.8.2 上传图片
 
 - POST /pics
+- payload
 
-- return :
+- return
   - data : 图片id
 ```json
     "code": 0,
@@ -385,8 +393,9 @@
 ### 1.8.3 删除图片
 
 - DELETE /pics/{pic_id}
+- payload
 
-- return :
+- return
 ```json
     "code": 0,
     "message": "",
@@ -395,56 +404,3 @@
 
 ---
 
-## 1.9 动态点赞
-
-### 1.9.1 点赞
-
-- POST /dynamic_like/{d_id}
-- return :
-```json
-    "code": 0,
-    "message": "",
-    "data": true
-```
-
----
-
-### 1.9.2 取消点赞
-
-- DELETE /dynamic_like/{d_id}
-
-- return :
-```json
-    "code": 0,
-    "message": "",
-    "data": true
-```
-
----
-
-## 1.10 评论点赞
-
-### 1.10.1 点赞
-
-- POST /comment_like/{comment_id}
-- return :
-```json
-    "code": 0,
-    "message": "",
-    "data": true
-```
-
----
-
-### 1.10.2 取消点赞
-
-- DELETE /comment_like/{comment_id}
-
-- return :
-```json
-    "code": 0,
-    "message": "",
-    "data": true
-```
-
----
