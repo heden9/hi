@@ -1,0 +1,38 @@
+.dialog-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  &.popUp{
+    animation: popUp 400ms ease;
+  }
+  .dialog-body{
+    flex: 1;
+    background: #efeff4;
+  }
+  &.popDown{
+    animation: popDown 400ms ease forwards;
+  }
+}
+.ddd{
+  position: absolute;
+}
+@keyframes popUp {
+  from{
+    transform: translateY(100%);
+  }
+  to{
+    transform: translateY(0);
+  }
+}
+@keyframes popDown {
+  from{
+    transform: translateY(0);
+  }
+  to{
+    transform: translateY(100%);
+  }
+}

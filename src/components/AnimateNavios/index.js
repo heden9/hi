@@ -129,36 +129,51 @@ function Navigator(props) {
         [classname]: true,
       })}
     >
-      <div
-        className={className({
+      <Header
+        classname={className({
           'nav-title': true,
           'navbar-on-left': nowPos !== 'page1',
           'navbar-from-left-to-center': nowPos !== 'page1' && turning,
           'navbar-from-center-to-left': nowPos === 'page1' && turning,
         })}
-      >
-        <span className="nav-btn" />
-        <span>{title}</span>
-        <span className="nav-btn" />
-      </div>
+        title={title}
+      />
       {
         (nowPos === 'page2' || turning) &&
-        <div
-          className={className({
-            'nav-title': true,
-            'navbar-on-right': nowPos === 'page1',
-            'navbar-from-right-to-center': nowPos !== 'page2' && turning,
-            'navbar-from-center-to-right': nowPos === 'page2' && turning,
-          })}
-        >
-          <span className="nav-btn" onClick={close}>
-            <i className="back-icon" />
-            <span>返回</span>
-          </span>
-          <span>{title2}</span>
-          <span className="nav-btn" />
-        </div>
+          <Header
+            classname={className({
+              'nav-title': true,
+              'navbar-on-right': nowPos === 'page1',
+              'navbar-from-right-to-center': nowPos !== 'page2' && turning,
+              'navbar-from-center-to-right': nowPos === 'page2' && turning,
+            })}
+            leftBtn={<div onClick={close}>
+              <i className="back-icon" />
+              <span>返回</span>
+            </div>}
+            title={title2}
+          />
       }
+    </div>
+  );
+}
+
+function Header({ classname, title, leftBtn, rightBtn }) {
+  return (
+    <div
+      className={classname || 'nav-title'}
+    >
+      <span className="nav-btn" >{leftBtn}</span>
+      <span>{title}</span>
+      <span className="nav-btn" >{rightBtn}</span>
+    </div>
+  );
+}
+
+export function Headers(props) {
+  return (
+    <div className="nav-container">
+      <Header {...props} />
     </div>
   );
 }

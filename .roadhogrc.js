@@ -29,11 +29,11 @@ export default {
     ]
   } ,
   proxy : {
-    // "/api": {
-    //   "target": "http://jsonplaceholder.typicode.com/",
-    //   "changeOrigin": true,
-    //   "pathRewrite": { "^/api" : "" }
-    // }
+    "/": {
+      "target": "http://app.nefuer.net",
+      "changeOrigin": true,
+      "pathRewrite": { "^/" : "" }
+    }
   } ,
   extraPostCSSPlugins : [
     pxtorem( {

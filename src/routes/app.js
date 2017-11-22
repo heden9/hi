@@ -4,8 +4,9 @@ import { TabBar } from 'antd-mobile';
 import { routerRedux } from 'dva/router';
 import Icon from '../components/icon';
 import Home from '../routes/home';
+import ULogin from '../routes/ulogin';
 
-function App({ children, location: { pathname }, dispatch }) {
+function App({ children, isLogin, location: { pathname }, dispatch }) {
   const pressHandle = (selected) => {
     dispatch(routerRedux.push(selected));
   };
@@ -38,7 +39,7 @@ function App({ children, location: { pathname }, dispatch }) {
         selected={pathname === '/contact'}
         icon={<Icon type={require('../assets/icon/message.svg')} />}
         selectedIcon={<Icon type={require('../assets/icon/message_fill.svg')} />}
-      >{pathname === '/contact' && children}</TabBar.Item>
+      >{renderChildren(pathname, children, isLogin)}</TabBar.Item>
       <TabBar.Item
         key={'/mine'}
         title="我的"
@@ -46,26 +47,26 @@ function App({ children, location: { pathname }, dispatch }) {
         selected={pathname === '/mine'}
         icon={<Icon type={require('../assets/icon/my.svg')} />}
         selectedIcon={<Icon type={require('../assets/icon/my_fill.svg')} />}
-      >{pathname === '/mine' && children}</TabBar.Item>
+      >{renderChildren(pathname, children, isLogin)}</TabBar.Item>
     </TabBar>
   );
 }
 
-function mapStateToProps() {
-  return ({
 
+function renderChildren(pathname, ele, isLogin) {
+  if (!isLogin) {
+    return <ULogin />;
+  }
+  switch (pathname) {
+    case '/mine':
+    case '/contact': return ele;
+    default: return null;
+  }
+}
+function mapStateToProps({ user: { id } }) {
+  return ({
+    isLogin: !!id,
   });
 }
-class tmpApp extends React.PureComponent {
-  componentDidMount() {
 
-
-  }
-  render() {
-    return (
-      <App {...this.props} />
-    );
-  }
-}
-
-export default connect(mapStateToProps)(tmpApp);
+export default connect(mapStateToProps)(App);

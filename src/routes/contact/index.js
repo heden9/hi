@@ -103,16 +103,16 @@ class Demo extends React.Component {
         dataSource={this.state.dataSource}
         className="am-list sticky-list"
         useBodyScroll
-        // style={{
-        //   height: '100%',
-        //   overflow: 'auto'
-        // }}
+        style={{
+          height: '100%',
+          overflow: 'auto',
+        }}
         renderSectionHeader={sectionData => (
           <div>{sectionData}</div>
         )}
         renderRow={renderRow}
         pullToRefresh={<PullToRefresh
-          distanceToRefresh={50}
+          distanceToRefresh={100}
           refreshing={this.state.refreshing}
           onRefresh={this.onRefresh}
         />}
