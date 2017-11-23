@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button } from 'antd-mobile';
-import { MixinDialog } from '../../components/dialog/test2';
+import { dialogOpen } from '../../components/dialog/test2';
 
-const signInHandle = () => MixinDialog.open('signIn');
-const signUpHandle = () => MixinDialog.open('signUp');
+const signInHandle = () => dialogOpen('signIn');
+const signUpHandle = () => dialogOpen('signUp');
 export default class uLogin extends React.Component {
   render() {
     return (

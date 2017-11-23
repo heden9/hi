@@ -1,6 +1,4 @@
-
-html, body, :global(#root) {
-  height: 100%;
+html {
   -webkit-overflow-scrolling: touch;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -8,6 +6,23 @@ html, body, :global(#root) {
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
   overflow-y: auto;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+input[type="search"] {
+  -webkit-appearance: textfield;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+html, body, :global(#root) {
+  height: 100%;
   .am-tabs-tab-bar-wrap {
 
   }

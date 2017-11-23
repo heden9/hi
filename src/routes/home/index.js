@@ -1,23 +1,56 @@
 /* eslint-disable */
 import React from 'react';
-import { ListView, PullToRefresh } from 'antd-mobile';
+import { ListView, PullToRefresh, List } from 'antd-mobile';
+import './style.less';
 
+const Item = List.Item;
+const Brief = Item.Brief;
 const data = [
   {
-    img: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
-    title: 'Meet hotel',
-    des: '不是所有的兼职汪都需要风吹日晒',
+    "id": 3,
+    "headImgUrl": "https://avatars0.githubusercontent.com/u/24803320?s=100&v=4",
+    "nickname": "CodeMonkeyJeffGT",
+    "brief": ":coffee: :taurus: CEO In @PROINPUT-Sistemas And Developer PHP in @1ncrivelSistemas",
+    "is_whole": true,
+    "img": [
+      "图片1url",
+      "图片2url"
+    ],
+    "comment_num": 23,
+    "is_like": false,
+    "like_num": 541,
+    "last_id": 23
   },
   {
-    img: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
-    title: 'McDonald\'s invites you',
-    des: '不是所有的兼职汪都需要风吹日晒',
+    "id": 3,
+    "headImgUrl": "https://avatars1.githubusercontent.com/u/20267214?s=100&v=4",
+    "nickname": "Ericjeff",
+    "brief": "Computational statistician, programmer and data scientist.",
+    "is_whole": true,
+    "img": [
+      "图片1url",
+      "图片2url"
+    ],
+    "comment_num": 23,
+    "is_like": false,
+    "like_num": 541,
+    "last_id": 23
   },
   {
-    img: 'https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png',
-    title: 'Eat the week',
-    des: '不是所有的兼职汪都需要风吹日晒',
-  },
+    "id": 3,
+    "headImgUrl": "https://avatars2.githubusercontent.com/u/418638?s=100&v=4",
+    "nickname": "Neal Fultz",
+    "brief": "自己被自己菜哭了）：",
+    "is_whole": true,
+    "img": [
+      "图片1url",
+      "图片2url"
+    ],
+    "comment_num": 23,
+    "is_like": false,
+    "like_num": 541,
+    "last_id": 23
+  }
 ];
 const NUM_ROWS = 20;
 let pageIndex = 0;
@@ -40,7 +73,6 @@ export default class Demo extends React.Component {
 
     this.state = {
       dataSource,
-      height: 0,
       isLoading: true,
       refreshing: false,
     };
@@ -95,45 +127,34 @@ export default class Demo extends React.Component {
       });
     }, 600);
   };
+  renderSeparator = (sectionID, rowID) => (
+    <div
+      key={`${sectionID}-${rowID}`}
+      style={{
+        backgroundColor: '#F5F5F9',
+        height: 8,
+        borderTop: '1px solid #ECECED',
+        borderBottom: '1px solid #ECECED',
+      }}
+    />
+  );
   render() {
-    const separator = (sectionID, rowID) => (
-      <div
-        key={`${sectionID}-${rowID}`}
-        style={{
-          backgroundColor: '#F5F5F9',
-          height: 8,
-          borderTop: '1px solid #ECECED',
-          borderBottom: '1px solid #ECECED',
-        }}
-      />
-    );
     let index = data.length - 1;
     const row = (rowData, sectionID, rowID) => {
       if (index < 0) {
         index = data.length - 1;
       }
-      const obj = data[index--];
+      const { headImgUrl, nickname, brief } = data[index--];
       return (
-        <div key={rowID} style={{ padding: '0 15px' }}>
-          <div
-            style={{
-              lineHeight: '50px',
-              color: '#888',
-              fontSize: 18,
-              borderBottom: '1px solid #F6F6F6',
-            }}
-          >{obj.title}</div>
-          <div style={{ display: '-webkit-box', display: 'flex', padding: '15px 0' }}>
-            <img style={{ height: '64px', marginRight: '15px' }} src={obj.img} alt="" />
-            <div style={{ lineHeight: 1 }}>
-              <div style={{ marginBottom: '8px', fontWeight: 'bold' }}>{obj.des}</div>
-              <div><span style={{ fontSize: '30px', color: '#FF6E27' }}>{rowID}</span>¥</div>
-            </div>
-          </div>
+        <div key={rowID} className={'home-row'}>
+          <Item
+            thumb={headImgUrl}>
+            {nickname}
+          </Item>
+          <p className={'row-brief'}>{brief}</p>
         </div>
       );
     };
-    console.log(this.state.height);
     return (
       <ListView
         ref={el => this.lv = el}
@@ -143,7 +164,7 @@ export default class Demo extends React.Component {
           {this.state.isLoading ? 'Loading...' : 'Loaded'}
         </div>)}
         renderRow={row}
-        renderSeparator={separator}
+        renderSeparator={this.renderSeparator}
         className="am-list"
         pageSize={4}
         // useBodyScroll

@@ -26,18 +26,17 @@ function checkStatus(response) {
  */
 export default function request(url, options) {
   const defaultOptions = {
-    credentials: 'include',
+    // credentials: 'include',
   };
   const newOptions = { ...defaultOptions, ...options };
-  if (newOptions.method === 'POST' || newOptions.method === 'PUT') {
-    newOptions.headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json; charset=utf-8',
-      ...newOptions.headers,
-    };
-    newOptions.body = JSON.stringify(newOptions.body);
-  }
-  return fetch(url, newOptions)
+  newOptions.headers = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json; charset=utf-8',
+    Authorization: window.common.readStorage('Authorization'),
+    ...newOptions.headers,
+  };
+  newOptions.body = JSON.stringify(newOptions.body);
+  return fetch(`http://app.nefuer.net${url}`, newOptions)
     .then(checkStatus)
     .then(parseJSON)
     .then(checkCode)
@@ -45,10 +44,15 @@ export default function request(url, options) {
 }
 
 
-function checkCode({ code, data, message }) {
+function checkCode({ code, data, message, Authorization }) {
   switch (code) {
-    case 0: return data;
-    case 2: MixinDialog.open('signIn');
+    case 0:
+      window.common.writeStorage('Authorization', Authorization);
+      return data;
+    case 2:
+      window.common.writeStorage('Authorization', '');
+      MixinDialog.open('signIn');
     default: throw new Error(message);
   }
 }
+

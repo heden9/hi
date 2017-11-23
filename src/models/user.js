@@ -1,5 +1,6 @@
 import { Toast } from 'antd-mobile';
 import { signIn, signUp } from '../services/api_user';
+import { dialogClose } from '../components/dialog/test2';
 
 export default {
 
@@ -23,6 +24,9 @@ export default {
         return;
       }
       Toast.success('登录成功：）');
+      setTimeout(() => {
+        dialogClose('signIn');
+      }, 100);
       yield put({ type: 'save', payload: data });
     },
     *signUp({ payload }, { call, put }) {  // eslint-disable-line
@@ -30,6 +34,10 @@ export default {
       if (!data) {
         return;
       }
+      Toast.success('注册成功：）');
+      setTimeout(() => {
+        dialogClose('signUp');
+      }, 100);
       yield put({ type: 'save', payload: data });
     },
   },

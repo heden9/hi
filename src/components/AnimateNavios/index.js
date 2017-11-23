@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import className from 'classnames';
 import './style.less';
 import './plus.less';
+import Event from '../dialog/event';
 
 class AnimateNavios extends React.PureComponent {
   static defaultProps = {
@@ -21,10 +22,11 @@ class AnimateNavios extends React.PureComponent {
     title2: '',
   };
   componentDidMount() {
-    AnimateNavios.openFunc = this.openHandle;
+    Event.addEvent('_nav_open', this.openHandle);
   }
   componentWillUnmount() {
     clearTimeout(this.timer);
+    Event.removeEvent('_nav_open');
   }
 
   /**
@@ -178,3 +180,6 @@ export function Headers(props) {
   );
 }
 export default AnimateNavios;
+export function NavOpen(...arg) {
+  Event.fireEvent('_nav_open', ...arg);
+}

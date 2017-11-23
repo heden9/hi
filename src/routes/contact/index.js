@@ -1,7 +1,7 @@
 import React from 'react';
 import { ListView, List, PullToRefresh } from 'antd-mobile';
 import './style.less';
-import AnimateNavios from '../../components/AnimateNavios';
+import { NavOpen } from '../../components/AnimateNavios';
 
 const info = {
   A: [
@@ -134,5 +134,5 @@ function renderRow({ headImgUrl, nickname }) {
   );
 }
 function open() {
-  AnimateNavios.openFunc('settings');
+  NavOpen('settings');
 }

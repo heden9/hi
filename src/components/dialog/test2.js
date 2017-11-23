@@ -4,6 +4,7 @@ import className from 'classnames';
 import { createPortal } from 'react-dom';
 import { Headers } from '../../components/AnimateNavios';
 import './style.less';
+import Event from './event';
 
 class Dialog extends React.Component {
   static defaultProps = {
@@ -21,6 +22,10 @@ class Dialog extends React.Component {
     turning: false,
   };
   componentDidMount() {
+    Event.addEvent('_dialog_close', this.closeHandle);
+  }
+  componentWillUnmount() {
+    Event.removeEvent('_dialog_close');
   }
   closeHandle = () => {
     this.setState({
@@ -64,9 +69,6 @@ Dialog.propTypes = {
   superClose: PropTypes.func,
 };
 
-// const openFunc = (fun) => {
-//   return fun;
-// };
 class MixinDialog extends React.Component {
   static defaultProps = {
     routes: [],
@@ -75,7 +77,10 @@ class MixinDialog extends React.Component {
     stack: [],
   };
   componentDidMount() {
-    MixinDialog.open = this.open;
+    Event.addEvent('_dialog_open', this.open);
+  }
+  componentWillUnmount() {
+    Event.removeEvent('_dialog_open');
   }
   open = (url) => {
     this.setState({
@@ -109,4 +114,10 @@ class MixinDialog extends React.Component {
 
 export default {
   MixinDialog,
+  dialogOpen(...arg) {
+    Event.fireEvent('_dialog_open', ...arg);
+  },
+  dialogClose(...arg) {
+    Event.fireEvent('_dialog_close', ...arg);
+  },
 };

@@ -7,11 +7,6 @@ class BasicInputExample extends React.Component {
   componentDidMount() {
     this.autoFocusInst.focus();
   }
-  componentWillReceiveProps(props) {
-    if (props.id) {
-      this.props.closeHandle();
-    }
-  }
   submit = () => {
     this.props.form.validateFields((error, value) => {
       console.log(error, value);
@@ -41,9 +36,8 @@ class BasicInputExample extends React.Component {
     );
   }
 }
-function mapStateToProps({ user: { id } }) {
+function mapStateToProps() {
   return {
-    id,
   };
 }
 const BasicInputExampleWrapper = connect(mapStateToProps)(createForm()(BasicInputExample));
