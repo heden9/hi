@@ -257,12 +257,12 @@
             "isWhole": true,
             "img": [
                 {
-                    id: 23,
-                    url: "图片1url",
+                    "id": 23,
+                    "url": "图片1url",
                 },
                 {
-                    id: 24,
-                    url: "图片1url",
+                    "id": 24,
+                    "url": "图片1url",
                 }
             ],
             "pubTime": "2小时前",
@@ -294,12 +294,12 @@
         "content": "动态内容",
         "img": [
             {
-                id: 23,
-                url: "图片1url",
+                "id": 23,
+                "url": "图片1url",
             },
             {
-                id: 24,
-                url: "图片1url",
+                "id": 24,
+                "url": "图片1url",
             }
         ],
         "pubTime": "2小时前",
