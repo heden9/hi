@@ -113,7 +113,7 @@
 
 #### 1.1.3. token核验
 
-- POST /checkToken
+- POST /transToken
 - payload :
 ```json
 {
