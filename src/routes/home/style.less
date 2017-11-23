@@ -1,8 +1,29 @@
 @headImgWidth: 80px;
+@grey: #9d9d9d;
 .home-row{
   padding: 0 20px;
+  .btn-group{
+    display: flex;
+    flex-direction: row;
+    border-top: 1px solid #eee;
+    a[role='button'] {
+      flex: 1;
+      border: none;
+      font-size: 26px;
+      color: #949494;
+      border-radius: 0;
+      border-right: 1px solid #eee;
+      &:last-child{
+        border: none;
+      }
+      &.am-button-active{
+        background: #eee;
+
+      }
+    }
+  }
   .am-list-content{
-    font-size: 30px !important;
+    font-size: 28px !important;
   }
   .am-list-item{
     padding-left: 0;
@@ -13,8 +34,20 @@
     border-radius: 4px;
     margin-right: 9px;
   }
+  .am-list-line{
+    padding-right: 0;
+    border: none !important;
+    .am-list-arrow{
+      margin-top: 20px !important;
+      margin-right: 0;
+    }
+  }
   .row-brief{
-    font-size: 30px;
-    color: black;
+    font-size: 32px;
+    margin: 15px 0;
+  }
+  .time{
+    font-size: 26px;
+    color: @grey;
   }
 }

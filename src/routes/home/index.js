@@ -1,55 +1,55 @@
 /* eslint-disable */
 import React from 'react';
-import { ListView, PullToRefresh, List } from 'antd-mobile';
+import Icon from '../../components/icon';
+import { ListView, PullToRefresh, List, Button } from 'antd-mobile';
 import './style.less';
-
+import { getDynamics } from '../../services/api_user';
 const Item = List.Item;
-const Brief = Item.Brief;
 const data = [
   {
     "id": 3,
     "headImgUrl": "https://avatars0.githubusercontent.com/u/24803320?s=100&v=4",
     "nickname": "CodeMonkeyJeffGT",
     "brief": ":coffee: :taurus: CEO In @PROINPUT-Sistemas And Developer PHP in @1ncrivelSistemas",
-    "is_whole": true,
+    "isWhole": true,
     "img": [
       "图片1url",
       "图片2url"
     ],
-    "comment_num": 23,
-    "is_like": false,
-    "like_num": 541,
-    "last_id": 23
+    "pubTime": "2小时前",
+    "commentNum": 23,
+    "isLike": false,
+    "likeNum": 541
   },
   {
     "id": 3,
     "headImgUrl": "https://avatars1.githubusercontent.com/u/20267214?s=100&v=4",
     "nickname": "Ericjeff",
     "brief": "Computational statistician, programmer and data scientist.",
-    "is_whole": true,
+    "isWhole": true,
     "img": [
       "图片1url",
       "图片2url"
     ],
+    "pubTime": "2小时前",
     "comment_num": 23,
-    "is_like": false,
-    "like_num": 541,
-    "last_id": 23
+    "isLike": false,
+    "likeNum": 541,
   },
   {
     "id": 3,
     "headImgUrl": "https://avatars2.githubusercontent.com/u/418638?s=100&v=4",
     "nickname": "Neal Fultz",
     "brief": "自己被自己菜哭了）：",
-    "is_whole": true,
+    "isWhole": true,
     "img": [
       "图片1url",
       "图片2url"
     ],
-    "comment_num": 23,
-    "is_like": false,
-    "like_num": 541,
-    "last_id": 23
+    "pubTime": "2小时前",
+    "commentNum": 23,
+    "isLike": false,
+    "likeNum": 541,
   }
 ];
 const NUM_ROWS = 20;
@@ -70,7 +70,7 @@ export default class Demo extends React.Component {
     const dataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
     });
-
+    this.fetchData = this.fetchData.bind(this);
     this.state = {
       dataSource,
       isLoading: true,
@@ -83,6 +83,7 @@ export default class Demo extends React.Component {
     // setTimeout(() => this.lv.scrollTo(0, 120), 800);
 
     // simulate initial Ajax
+    this.fetchData();
     setTimeout(() => {
       this.rData = genData();
       this.setState({
@@ -92,6 +93,13 @@ export default class Demo extends React.Component {
     }, 0);
   }
 
+  async fetchData(offset) {
+    const data = await getDynamics({offset});
+    if(!data){
+      return;
+    }
+    console.log(data);
+  };
   // If you use redux, the data maybe at props, you need use `componentWillReceiveProps`
   // componentWillReceiveProps(nextProps) {
   //   if (nextProps.dataSource !== this.props.dataSource) {
@@ -144,14 +152,21 @@ export default class Demo extends React.Component {
       if (index < 0) {
         index = data.length - 1;
       }
-      const { headImgUrl, nickname, brief } = data[index--];
+      const { headImgUrl, nickname, brief, pubTime, likeNum, commentNum } = data[index--];
       return (
         <div key={rowID} className={'home-row'}>
           <Item
+            align="top"
             thumb={headImgUrl}>
             {nickname}
+            <div className="time">{pubTime}</div>
           </Item>
-          <p className={'row-brief'}>{brief}</p>
+          <div className={'row-brief'}>{brief}</div>
+          <div className={'btn-group'}>
+            <Button size={'small'} icon={<Icon type={require('../../assets/icon/forward.svg')}/>}>转发</Button>
+            <Button size={'small'} icon={<Icon type={require('../../assets/icon/comment.svg')}/>}>{ commentNum|| '评论'}</Button>
+            <Button size={'small'} icon={<Icon type={require('../../assets/icon/appreciate.svg')}/>}>{likeNum || '点赞'}</Button>
+          </div>
         </div>
       );
     };
