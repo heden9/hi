@@ -23,7 +23,7 @@ export default {
       if (!data) {
         return;
       }
-      Toast.success('登录成功：）');
+      Toast.success('登录成功：）', undefined, undefined, false);
       setTimeout(() => {
         dialogClose('signIn');
       }, 100);

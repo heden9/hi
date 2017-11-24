@@ -10,7 +10,7 @@ class AnimateNavios extends React.PureComponent {
     needNav: true,
     classname: '',
     routes: {},
-    mainTitle: {},
+    main: {},
   };
   constructor(...arg) {
     super(...arg);
@@ -66,7 +66,7 @@ class AnimateNavios extends React.PureComponent {
   };
   render() {
     const { nowPos, turning } = this.state;
-    const { needNav, classname, children, location: { pathname }, mainTitle } = this.props;
+    const { needNav, classname, children, location: { pathname }, main } = this.props;
     return (
       <div className="pages-body">
         {
@@ -74,7 +74,7 @@ class AnimateNavios extends React.PureComponent {
           <Navigator
             {...this.state}
             classname={classname}
-            config={mainTitle[pathname.substr(1, 10)]}
+            config={main[pathname.substr(1, 10)]}
             subViewData={this.subViewData}
             close={this.toggle}
           />
@@ -114,7 +114,7 @@ AnimateNavios.propTypes = {
   needNav: PropTypes.bool,
   classname: PropTypes.string,
   routes: PropTypes.object,
-  mainTitle: PropTypes.object,
+  main: PropTypes.object,
   children: PropTypes.element,
   // onChange: PropTypes.func,
 };
@@ -122,7 +122,6 @@ AnimateNavios.propTypes = {
 
 function Navigator(props) {
   const { config = {}, nowPos, subViewData, turning, close, classname } = props;
-  const { title = 'nav' } = config;
   const { title: title2 } = subViewData;
   return (
     <div
@@ -132,13 +131,13 @@ function Navigator(props) {
       })}
     >
       <Header
+        {...config}
         classname={className({
           'nav-title': true,
           'navbar-on-left': nowPos !== 'page1',
           'navbar-from-left-to-center': nowPos !== 'page1' && turning,
           'navbar-from-center-to-left': nowPos === 'page1' && turning,
         })}
-        title={title}
       />
       {
         (nowPos === 'page2' || turning) &&
@@ -165,9 +164,9 @@ function Header({ classname, title, leftBtn, rightBtn }) {
     <div
       className={classname || 'nav-title'}
     >
-      <span className="nav-btn" >{leftBtn}</span>
+      <div className="nav-btn" >{leftBtn}</div>
       <span>{title}</span>
-      <span className="nav-btn" >{rightBtn}</span>
+      <div className="nav-btn" >{rightBtn}</div>
     </div>
   );
 }

@@ -25,8 +25,14 @@ input[type="search"]::-webkit-search-decoration {
 html, body, :global(#root) {
   height: 100%;
   color: #333;
-  .am-tabs-tab-bar-wrap {
-
+  .am-list-view-scrollview{
+    overflow-y: auto;
+  }
+  .am-list-view-scrollview-content{
+    min-height: 100%;
+  }
+  .am-pull-to-refresh-content-wrapper{
+    min-height: 100%;
   }
 }
 body{

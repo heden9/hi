@@ -4,9 +4,11 @@ import Contact from './routes/contact';
 import Chat from './routes/chat';
 import App from './routes/app';
 import AnimateNavios from './components/AnimateNavios';
-import { MixinDialog } from './components/dialog/test2';
+import { MixinDialog, dialogOpen } from './components/dialog/test2';
+import Icon from './components/icon';
 import Login from './routes/login';
 import SignUp from './routes/signUp';
+import { Write, Btn } from './routes/write';
 
 const dialogConfig = {
   signIn: {
@@ -21,6 +23,13 @@ const dialogConfig = {
       return <SignUp {...props} />;
     },
   },
+  write: {
+    title: '发消息',
+    component(props) {
+      return <Write {...props} />;
+    },
+    rightBtn: <Btn />,
+  },
 };
 function RouterConfig({ history }) {
   return (
@@ -30,7 +39,7 @@ function RouterConfig({ history }) {
           <AnimateNavios
             {...props}
             routes={routesConfig}
-            mainTitle={mainTitleConfig}
+            main={mainConfig}
           >
             <div style={{ height: '100%' }}>
               <App {...props} >
@@ -59,8 +68,12 @@ const routesConfig = {
     component: <Chat />,
     title: '设置',
   },
+  detail: {
+    component: <Chat />,
+    title: '文章详情',
+  },
 };
-const mainTitleConfig = {
+const mainConfig = {
   contact: {
     title: '联系人',
   },
@@ -69,6 +82,7 @@ const mainTitleConfig = {
   },
   home: {
     title: '动态',
+    rightBtn: <Icon type={require('./assets/icon/post.svg')} onClick={() => dialogOpen('write')} />,
   },
   map: {
     title: '地图',

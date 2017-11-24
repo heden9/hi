@@ -1,13 +1,12 @@
 import fetch from 'dva/fetch';
 import { Toast } from 'antd-mobile';
-import { MixinDialog } from '../components/dialog/test2';
+import { dialogOpen } from '../components/dialog/test2';
 
 function parseJSON(response) {
   return response.json();
 }
 
 function checkStatus(response) {
-  console.log(response.headers);
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
@@ -32,26 +31,29 @@ export default function request(url, options) {
   newOptions.headers = {
     Accept: 'application/json',
     'Content-Type': 'application/json; charset=utf-8',
-    Authorization: window.common.readStorage('Authorization'),
+    token: window.common.readStorage('token'),
     ...newOptions.headers,
   };
   newOptions.body = JSON.stringify(newOptions.body);
+  if (newOptions.method !== 'GET') {
+    newOptions.mode = 'cors';
+  }
   return fetch(`http://app.nefuer.net${url}`, newOptions)
     .then(checkStatus)
     .then(parseJSON)
     .then(checkCode)
-    .catch((err) => { Toast.fail(err.message); });
+    .catch((err) => { Toast.fail(err.message, undefined, undefined, false); });
 }
 
 
-function checkCode({ code, data, message, Authorization }) {
+function checkCode({ code, data, message, token }) {
   switch (code) {
     case 0:
-      window.common.writeStorage('Authorization', Authorization);
+      window.common.writeStorage('token', token);
       return data;
     case 2:
-      window.common.writeStorage('Authorization', '');
-      MixinDialog.open('signIn');
+      window.common.writeStorage('token', '');
+      dialogOpen('signIn');
     default: throw new Error(message);
   }
 }

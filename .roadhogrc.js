@@ -17,6 +17,7 @@ export default {
   less: true,
   theme: {
     '@primary-color': 'rgb(100,194,92)',
+    '@primary-grey': '#949494',
     '@hd': '2px',
   },
   disableCSSModules : true ,

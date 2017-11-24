@@ -2,6 +2,7 @@
 @grey: #9d9d9d;
 .home-row{
   padding: 0 20px;
+  animation: fadeIn 400ms ease;
   .btn-group{
     display: flex;
     flex-direction: row;
@@ -18,8 +19,11 @@
       }
       &.am-button-active{
         background: #eee;
-
       }
+      &.isLike{
+        color: @primary-color;
+      }
+
     }
   }
   .am-list-content{
@@ -44,10 +48,26 @@
   }
   .row-brief{
     font-size: 32px;
-    margin: 15px 0;
+    margin: 15px 0 20px 0;
   }
   .time{
     font-size: 26px;
     color: @grey;
+  }
+}
+.separator{
+  background-color: #F5F5F9;
+  height: 20px;
+  border-top: 1px solid #ECECED;
+  border-bottom: 1px solid #ECECED;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

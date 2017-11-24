@@ -5,12 +5,16 @@
   height: 100%;
   width: 100%;
   display: flex;
+  z-index: 11000;
   flex-direction: column;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
   &.popUp{
     animation: popUp 400ms ease;
   }
   .dialog-body{
     flex: 1;
+    overflow-x: scroll;
     background: #efeff4;
   }
   &.popDown{
@@ -18,7 +22,7 @@
   }
 }
 .ddd{
-  position: absolute;
+  position: fixed;
 }
 @keyframes popUp {
   from{

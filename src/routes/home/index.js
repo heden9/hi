@@ -1,69 +1,22 @@
-/* eslint-disable */
 import React from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import { ListView, List, Button, Toast } from 'antd-mobile';
 import Icon from '../../components/icon';
-import { ListView, PullToRefresh, List, Button } from 'antd-mobile';
 import './style.less';
-import { getDynamics } from '../../services/api_user';
-const Item = List.Item;
-const data = [
-  {
-    "id": 3,
-    "headImgUrl": "https://avatars0.githubusercontent.com/u/24803320?s=100&v=4",
-    "nickname": "CodeMonkeyJeffGT",
-    "brief": ":coffee: :taurus: CEO In @PROINPUT-Sistemas And Developer PHP in @1ncrivelSistemas",
-    "isWhole": true,
-    "img": [
-      "图片1url",
-      "图片2url"
-    ],
-    "pubTime": "2小时前",
-    "commentNum": 23,
-    "isLike": false,
-    "likeNum": 541
-  },
-  {
-    "id": 3,
-    "headImgUrl": "https://avatars1.githubusercontent.com/u/20267214?s=100&v=4",
-    "nickname": "Ericjeff",
-    "brief": "Computational statistician, programmer and data scientist.",
-    "isWhole": true,
-    "img": [
-      "图片1url",
-      "图片2url"
-    ],
-    "pubTime": "2小时前",
-    "comment_num": 23,
-    "isLike": false,
-    "likeNum": 541,
-  },
-  {
-    "id": 3,
-    "headImgUrl": "https://avatars2.githubusercontent.com/u/418638?s=100&v=4",
-    "nickname": "Neal Fultz",
-    "brief": "自己被自己菜哭了）：",
-    "isWhole": true,
-    "img": [
-      "图片1url",
-      "图片2url"
-    ],
-    "pubTime": "2小时前",
-    "commentNum": 23,
-    "isLike": false,
-    "likeNum": 541,
-  }
-];
-const NUM_ROWS = 20;
-let pageIndex = 0;
+import { getDynamics, dynamicLikes } from '../../services/api_dynamics';
+import { NavOpen } from '../../components/AnimateNavios';
 
-function genData(pIndex = 0) {
+const Item = List.Item;
+
+
+function genData2(data) {
   const dataBlob = {};
-  for (let i = 0; i < NUM_ROWS; i++) {
-    const ii = (pIndex * NUM_ROWS) + i;
-    dataBlob[`${ii}`] = `row - ${ii}`;
+  for (let i = 0; i < data.length; i++) {
+    dataBlob[data[i].id] = data[i];
   }
   return dataBlob;
 }
-
 export default class Demo extends React.Component {
   constructor(props) {
     super(props);
@@ -71,9 +24,12 @@ export default class Demo extends React.Component {
       rowHasChanged: (row1, row2) => row1 !== row2,
     });
     this.fetchData = this.fetchData.bind(this);
+    this.rData = {};
     this.state = {
       dataSource,
       isLoading: true,
+      offset: 0,
+      hasMore: 1,
       refreshing: false,
     };
   }
@@ -84,22 +40,9 @@ export default class Demo extends React.Component {
 
     // simulate initial Ajax
     this.fetchData();
-    setTimeout(() => {
-      this.rData = genData();
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        isLoading: false,
-      });
-    }, 0);
   }
 
-  async fetchData(offset) {
-    const data = await getDynamics({offset});
-    if(!data){
-      return;
-    }
-    console.log(data);
-  };
+
   // If you use redux, the data maybe at props, you need use `componentWillReceiveProps`
   // componentWillReceiveProps(nextProps) {
   //   if (nextProps.dataSource !== this.props.dataSource) {
@@ -109,94 +52,146 @@ export default class Demo extends React.Component {
   //   }
   // }
 
-  onEndReached = (event) => {
+  onEndReached = () => {
     // load new data
     // hasMore: from backend data, indicates whether it is the last page, here is false
-    if (this.state.isLoading && !this.state.hasMore) {
+    if (this.state.isLoading || !this.state.hasMore) {
       return;
     }
-    console.log('reach end', event);
     this.setState({ isLoading: true });
-    setTimeout(() => {
-      this.rData = { ...this.rData, ...genData(++pageIndex) };
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        isLoading: false,
-      });
-    }, 1000);
+    this.fetchData(this.state.offset);
   };
   onRefresh = () => {
     this.setState({ refreshing: true });
     // simulate initial Ajax
-    this.timer = setTimeout(() => {
-      this.setState({
-        dataSource: genData(this.state.dataSource, info),
-        refreshing: false,
-      });
-    }, 600);
+    this.fetchData();
   };
+  async fetchData(now = 0) {
+    const data = await getDynamics({ offset: now });
+    if (!data) {
+      return;
+    }
+    const { dynamics, hasMore, offset } = data;
+    if (now === 0) {
+      this.rData = {};
+      Toast.success(`已拉取${dynamics.length}条动态：）`, undefined, undefined, false);
+    }
+    this.rData = { ...this.rData, ...genData2(dynamics) };
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      offset,
+      hasMore: !!hasMore,
+      isLoading: false,
+      refreshing: false,
+    });
+  }
   renderSeparator = (sectionID, rowID) => (
     <div
       key={`${sectionID}-${rowID}`}
-      style={{
-        backgroundColor: '#F5F5F9',
-        height: 8,
-        borderTop: '1px solid #ECECED',
-        borderBottom: '1px solid #ECECED',
-      }}
+      className="separator"
     />
   );
   render() {
-    let index = data.length - 1;
-    const row = (rowData, sectionID, rowID) => {
-      if (index < 0) {
-        index = data.length - 1;
-      }
-      const { headImgUrl, nickname, brief, pubTime, likeNum, commentNum } = data[index--];
-      return (
-        <div key={rowID} className={'home-row'}>
-          <Item
-            align="top"
-            thumb={headImgUrl}>
-            {nickname}
-            <div className="time">{pubTime}</div>
-          </Item>
-          <div className={'row-brief'}>{brief}</div>
-          <div className={'btn-group'}>
-            <Button size={'small'} icon={<Icon type={require('../../assets/icon/forward.svg')}/>}>转发</Button>
-            <Button size={'small'} icon={<Icon type={require('../../assets/icon/comment.svg')}/>}>{ commentNum|| '评论'}</Button>
-            <Button size={'small'} icon={<Icon type={require('../../assets/icon/appreciate.svg')}/>}>{likeNum || '点赞'}</Button>
-          </div>
-        </div>
-      );
-    };
     return (
       <ListView
-        ref={el => this.lv = el}
         dataSource={this.state.dataSource}
-        renderHeader={() => <span>header</span>}
+        // renderHeader={() => <span>header</span>}
         renderFooter={() => (<div style={{ height: 30, textAlign: 'center' }}>
           {this.state.isLoading ? 'Loading...' : 'Loaded'}
         </div>)}
         renderRow={row}
         renderSeparator={this.renderSeparator}
         className="am-list"
-        pageSize={4}
-        // useBodyScroll
+        pageSize={20}
         style={{
           overflow: 'auto',
           height: '100%',
         }}
-        onScroll={() => { console.log('scroll'); }}
-        scrollRenderAheadDistance={500}
+        scrollRenderAheadDistance={1000}
         onEndReached={this.onEndReached}
-        onEndReachedThreshold={10}
-        pullToRefresh={<PullToRefresh
-          distanceToRefresh={50}
-          refreshing={this.state.refreshing}
-          onRefresh={this.onRefresh}
-        />}
+        onEndReachedThreshold={300}
+        // pullToRefresh={<PullToRefresh
+        //   distanceToRefresh={50}
+        //   refreshing={this.state.refreshing}
+        //   onRefresh={this.onRefresh}
+        // />}
       />
     );
   }
 }
+const row = (rowData, sectionID, rowID) => {
+  const { headImgUrl, nickname, brief, pubTime, likeNum, commentNum, id, img, isLike } = rowData;
+  return (
+    <div key={rowID} className={'home-row'} onClick={() => open(nickname)}>
+      <Item
+        align="top"
+        thumb={headImgUrl}
+      >
+        {nickname}
+        <div className="time">{pubTime}</div>
+      </Item>
+      <div className={'row-brief'}>{brief}</div>
+      {
+        img.map(item => (<img src={item} alt="" />))
+      }
+      <div className={'btn-group'}>
+        <Button size={'small'} icon={<Icon type={require('../../assets/icon/forward.svg')} />}>转发</Button>
+        <Button size={'small'} icon={<Icon type={require('../../assets/icon/comment.svg')} />}>{ commentNum || '评论'}</Button>
+        <WrapButton size={'small'} id={id} isLike={!!isLike} likeNum={likeNum} />
+      </div>
+    </div>
+  );
+};
+
+
+function open(title) {
+  NavOpen('detail', { title });
+}
+
+
+class WrapButton extends React.PureComponent {
+  constructor(...arg) {
+    super(...arg);
+    this.clickHandle = this.clickHandle.bind(this);
+  }
+  state = {
+    isLike: this.props.isLike,
+    num: this.props.likeNum,
+  };
+  async clickHandle(e) {
+    e.stopPropagation();
+    const data = await dynamicLikes(this.state.isLike ? 'DELETE' : 'POST', this.props.id);
+    if (!data) {
+      return;
+    }
+    const num = this.state.isLike ? this.state.num - 1 : this.state.num + 1;
+    this.setState({
+      isLike: !this.state.isLike,
+      num,
+    });
+  }
+  render() {
+    return (
+      <Button
+        size={'small'}
+        onClick={this.clickHandle}
+        className={classnames({
+          isLike: this.state.isLike,
+        })}
+        icon={<Icon
+          type={
+            this.state.isLike ?
+              require('../../assets/icon/appreciate_fill.svg') :
+              require('../../assets/icon/appreciate.svg')}
+        />}
+      >
+        {this.state.num || '点赞'}
+      </Button>
+    );
+  }
+}
+WrapButton.propTypes = {
+  id: PropTypes.number.isRequired,
+  likeNum: PropTypes.number.isRequired,
+  isLike: PropTypes.bool.isRequired,
+};

@@ -38,7 +38,7 @@ class Dialog extends React.Component {
     });
   };
   render() {
-    const { title, rightBtn, WrapComponent } = this.props;
+    const { title, rightBtn, component: WrapComponent } = this.props;
     return createPortal(
       <div
         ref={(ref) => { this.dialog = ref; }}
@@ -63,7 +63,7 @@ class Dialog extends React.Component {
 }
 
 Dialog.propTypes = {
-  WrapComponent: PropTypes.func,
+  component: PropTypes.func,
   title: PropTypes.string,
   rightBtn: PropTypes.element,
   superClose: PropTypes.func,
@@ -96,11 +96,9 @@ class MixinDialog extends React.Component {
     return this.state.stack.map((item) => {
       const ele = this.props.routes[item];
       if (ele) {
-        const Com = ele.component;
         return (
           <Dialog
-            title={ele.title}
-            WrapComponent={Com}
+            {...ele}
             superClose={url => this.close(url)}
             key={item}
           />
