@@ -6,9 +6,6 @@ import './style.less';
 
 class forward extends React.Component {
   componentDidMount() {
-    setTimeout(() => {
-      this.autoFocusInst.focus();
-    }, 400);
   }
   changeHandle = () => {
   };
@@ -40,7 +37,8 @@ function mapStateToProps() {
   return {
   };
 }
-export default {
-  ForwardBtn: connect()(SendBtn),
-  Forward: connect(mapStateToProps)(forward),
-};
+
+const Forward = connect(mapStateToProps)(forward);
+Forward.rightBtn = connect()(SendBtn);
+
+export default Forward;

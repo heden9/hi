@@ -11,19 +11,18 @@ class comment extends React.Component {
     this.props.dispatch({ type: 'comment/save', payload: { value } });
   };
   render() {
-    return (
-      <div>
-        <TextareaItem
-          value={this.props.value}
-          onChange={this.changeHandle}
-          placeholder="说点什么吧..."
-          ref={(el) => { this.autoFocusInst = el; }}
-          clear={false}
-          rows={8}
-        />
-        <ToolBar />
-      </div>
-    );
+    return [
+      <TextareaItem
+        key={1}
+        value={this.props.value}
+        onChange={this.changeHandle}
+        placeholder="说点什么吧..."
+        ref={(el) => { this.autoFocusInst = el; }}
+        clear={false}
+        rows={8}
+      />,
+      <ToolBar key={2} />,
+    ];
   }
 }
 
@@ -40,7 +39,8 @@ function mapStateToProps({ comment: { value } }) {
     value,
   };
 }
-export default {
-  CommentBtn: connect()(SendBtn),
-  Comment: connect(mapStateToProps)(comment),
-};
+
+const Comment = connect(mapStateToProps)(comment);
+Comment.rightBtn = connect()(SendBtn);
+
+export default Comment;

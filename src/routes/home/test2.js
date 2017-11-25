@@ -13,7 +13,7 @@ import Event from '../../components/dialog/event';
 const Item = List.Item;
 
 
-export default class Demo extends React.Component {
+export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.fetchData = this.fetchData.bind(this);
@@ -34,16 +34,6 @@ export default class Demo extends React.Component {
     this.fetchData();
     Event.addEvent('_list_refresh', this.onRefresh);
   }
-
-
-  // If you use redux, the data maybe at props, you need use `componentWillReceiveProps`
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.dataSource !== this.props.dataSource) {
-  //     this.setState({
-  //       dataSource: this.state.dataSource.cloneWithRows(nextProps.dataSource),
-  //     });
-  //   }
-  // }
 
   onEndReached = () => {
     // load new data
@@ -111,12 +101,12 @@ const Row = (prop) => {
     likeNum,
     commentNum,
     id,
-    img,
-    isLike,
-    isWhole,
+    img = [],
+    isLike = false,
+    isWhole = true,
   } = prop;
   return (
-    <div key={id} className={'home-row test2'} onClick={() => open(nickname)}>
+    <div key={id} className={'home-row test2'} onClick={() => open({ title: nickname, id })}>
       <Item
         align="top"
         thumb={headImgUrl}
@@ -126,7 +116,7 @@ const Row = (prop) => {
       </Item>
       <pre className={'row-brief'}>
         {brief}
-        {!!isWhole || <span className="readMore">阅读全文</span>}
+        {!!isWhole || <span className="readMore">全文</span>}
       </pre>
       {
         img.map(item => (<img src={item} alt="" />))
@@ -148,6 +138,15 @@ const Row = (prop) => {
   );
 };
 
+Home.rightBtn = () => {
+  return <Icon type={require('../../assets/icon/post.svg')} onClick={() => dialogOpen('write')} />;
+};
+Home.leftBtn = () => {
+  return <Icon type={require('../../assets/icon/loading2.svg')} onClick={() => Event.fireEvent('_list_refresh')} />;
+};
+
+Home.Row = Row;
+
 function openComment(e) {
   e.stopPropagation();
   dialogOpen('comment');
@@ -156,8 +155,8 @@ function openForward(e) {
   e.stopPropagation();
   dialogOpen('forward');
 }
-function open(title) {
-  NavOpen('detail', { title });
+function open({ title, id }) {
+  NavOpen('detail', { title, id });
 }
 
 

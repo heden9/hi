@@ -51,16 +51,14 @@ class AnimateNavios extends React.PureComponent {
    * @param settings
    */
   openHandle = (url, options = {}) => {
-    this.subViewData = { ...this.props.routes[url] };
-    if (options.title) {
-      this.subViewData.title = options.title;
-    }
+    this.subViewData = { ...this.props.routes[url], ...options };
     this.toggle();
   };
   renderSubView = (subViewData) => {
     if (subViewData) {
+      const { component: Com, ...arg } = subViewData;
       return (
-        subViewData.component
+        <Com {...arg} />
       );
     }
   };
@@ -89,7 +87,7 @@ class AnimateNavios extends React.PureComponent {
               'page-from-center-to-left': nowPos === 'page1' && turning,
               'page-from-left-to-center': nowPos !== 'page1' && turning,
             })}
-          >{children}</div>
+          >{React.Children.map(children, child => (child))}</div>
           {
             (nowPos === 'page2' || turning) &&
             <RightPage
@@ -113,14 +111,11 @@ class AnimateNavios extends React.PureComponent {
 
 class RightPage extends React.PureComponent {
   componentDidMount() {
-    document.body.addEventListener('scroll', this.func);
+    window.document.body.style.overflow = 'hidden';
   }
   componentWillUnmount() {
-    document.body.addEventListener('scroll', this.func);
+    window.document.body.style.overflow = 'auto';
   }
-  func = (e) => {
-    e.preventDefault();
-  };
   render() {
     return (
       <div
@@ -135,7 +130,7 @@ AnimateNavios.propTypes = {
   classname: PropTypes.string,
   routes: PropTypes.object,
   main: PropTypes.object,
-  children: PropTypes.element,
+  children: PropTypes.array,
   // onChange: PropTypes.func,
 };
 

@@ -13,7 +13,7 @@ export default class ListView extends React.PureComponent {
   };
   componentDidMount() {
     const { onEndReached, listenNode, scrollEventThrottle } = this.props;
-    const newScroll = _.throttle(() => {
+    this.newScroll = _.throttle(() => {
       const sH = document.documentElement.scrollHeight;
       const cH = document.documentElement.clientHeight;
       const sT = document.documentElement.scrollTop || document.body.scrollTop;
@@ -22,12 +22,15 @@ export default class ListView extends React.PureComponent {
         console.log('end');
       }
     }, scrollEventThrottle);
-    listenNode.addEventListener('scroll', newScroll);
+    listenNode.addEventListener('scroll', this.newScroll);
+  }
+  componentWillUnmount() {
+    this.props.listenNode.removeEventListener('scroll', this.newScroll);
   }
   render() {
     const { dataSource, row, className, renderFooter, isLoading } = this.props;
     return (
-      <div className={className} ref={(ref) => { this.List = ref; }}>
+      <div className={className}>
         {
           dataSource.map((item, index) => {
             return row(item, index);

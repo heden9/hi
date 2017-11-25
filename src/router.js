@@ -1,51 +1,44 @@
 import React from 'react';
 import { Router, Route, Switch } from 'dva/router';
+import AnimateNavios from './components/AnimateNavios';
+import { MixinDialog } from './components/dialog/test2';
+
+// page
 import Contact from './routes/contact';
 import Chat from './routes/chat';
 import App from './routes/bpp';
-import AnimateNavios from './components/AnimateNavios';
-import { MixinDialog, dialogOpen } from './components/dialog/test2';
-import Icon from './components/icon';
 import Login from './routes/login';
 import SignUp from './routes/signUp';
-import Event from './components/dialog/event';
-import { Write, WriteBtn } from './routes/write';
-import { Comment, CommentBtn } from './routes/comment';
-import { Forward, ForwardBtn } from './routes/forward';
+import Detail from './routes/detail';
+import Home from './routes/home/test2';
+import Write from './routes/write';
+import Comment from './routes/comment';
+import Forward from './routes/forward';
+
 
 const dialogConfig = {
   signIn: {
     title: '登录',
-    component(props) {
-      return <Login {...props} />;
-    },
+    component: Login,
   },
   signUp: {
     title: '注册',
-    component(props) {
-      return <SignUp {...props} />;
-    },
+    component: SignUp,
   },
   write: {
     title: '发消息',
-    component(props) {
-      return <Write {...props} />;
-    },
-    rightBtn: <WriteBtn />,
+    component: Write,
+    rightBtn: <Write.rightBtn />,
   },
   comment: {
     title: '评论',
-    component(props) {
-      return <Comment {...props} />;
-    },
-    rightBtn: <CommentBtn />,
+    component: Comment,
+    rightBtn: <Comment.rightBtn />,
   },
   forward: {
     title: '转发',
-    component(props) {
-      return <Forward {...props} />;
-    },
-    rightBtn: <ForwardBtn />,
+    component: Forward,
+    rightBtn: <Forward.rightBtn />,
   },
 };
 function RouterConfig({ history }) {
@@ -58,17 +51,15 @@ function RouterConfig({ history }) {
             routes={routesConfig}
             main={mainConfig}
           >
-            <div>
-              <App {...props} >
-                <Switch>
-                  <Route path="/contact" exact component={Contact} />
-                  <Route path="/home" exact component={() => <div>home</div>} />
-                  <Route path="/mine" exact component={() => <div>mine</div>} />
-                  <Route path="/map" exact component={() => <div>map</div>} />
-                </Switch>
-              </App>
-              <MixinDialog routes={dialogConfig} />
-            </div>
+            <App {...props} >
+              <Switch>
+                <Route path="/contact" exact component={Contact} />
+                <Route path="/home" exact component={() => <div>home</div>} />
+                <Route path="/mine" exact component={() => <div>mine</div>} />
+                <Route path="/map" exact component={() => <div>map</div>} />
+              </Switch>
+            </App>
+            <MixinDialog routes={dialogConfig} />
           </AnimateNavios>
       )}
       />
@@ -79,15 +70,15 @@ function RouterConfig({ history }) {
 
 const routesConfig = {
   chat: {
-    component: <Chat />,
+    component: Chat,
   },
   settings: {
-    component: <Chat />,
+    component: Chat,
     title: '设置',
   },
   detail: {
-    component: <Chat />,
-    title: '文章详情',
+    component: Detail,
+    title: '动态正文',
   },
 };
 const mainConfig = {
@@ -99,8 +90,8 @@ const mainConfig = {
   },
   home: {
     title: '动态',
-    rightBtn: <Icon type={require('./assets/icon/post.svg')} onClick={() => dialogOpen('write')} />,
-    leftBtn: <Icon type={require('./assets/icon/loading2.svg')} onClick={() => Event.fireEvent('_list_refresh')} />,
+    rightBtn: <Home.rightBtn />,
+    leftBtn: <Home.leftBtn />,
   },
   map: {
     title: '地图',

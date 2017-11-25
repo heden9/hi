@@ -22,9 +22,11 @@ class Dialog extends React.Component {
     turning: false,
   };
   componentDidMount() {
+    window.document.body.style.overflow = 'hidden';
     Event.addEvent('_dialog_close', this.closeHandle);
   }
   componentWillUnmount() {
+    window.document.body.style.overflow = 'auto';
     Event.removeEvent('_dialog_close');
   }
   closeHandle = () => {

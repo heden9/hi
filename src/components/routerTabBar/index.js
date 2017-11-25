@@ -23,7 +23,9 @@ export default class RouterTabBar extends React.PureComponent {
       <div style={{ display: selected ? 'block' : 'none' }} key={1}>
         <Ele />
       </div>,
-      selected || content,
+      selected || React.Children.map(content, (child) => {
+        return child;
+      }),
       createPortal(
         <div
           className="router-tab-bar"
@@ -61,7 +63,10 @@ RouterTabBar.propTypes = {
   children: PropTypes.array,
   unselectedTintColor: PropTypes.string,
   barTintColor: PropTypes.string,
-  content: PropTypes.element,
+  content: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.element,
+  ]),
   keepAliveCom: PropTypes.object,
 };
 RouterTabBar.Item = Item;

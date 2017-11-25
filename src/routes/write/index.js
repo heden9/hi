@@ -58,7 +58,8 @@ function mapStateToProps({ write: { value } }) {
     value,
   };
 }
-export default {
-  WriteBtn: connect(({ loading }) => ({ loading: loading.models.write }))(SendBtn),
-  Write: connect(mapStateToProps)(write),
-};
+
+const Write = connect(mapStateToProps)(write);
+Write.rightBtn = connect(({ loading }) => ({ loading: loading.models.write }))(SendBtn);
+
+export default Write;

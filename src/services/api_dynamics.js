@@ -34,7 +34,13 @@ export function postDynamics(content, img = []) {
   });
 }
 
-
+/**
+ * 发布评论
+ * @param content
+ * @param dynamicId
+ * @param pComment
+ * @returns {Object}
+ */
 export function postComment({ content, dynamicId, pComment = 0 }) {
   return request(`/comments/${dynamicId}`, {
     method: 'POST',
@@ -42,5 +48,16 @@ export function postComment({ content, dynamicId, pComment = 0 }) {
       content,
       pComment,
     },
+  });
+}
+
+/**
+ * 获取单条动态
+ * @param id
+ * @returns {Object}
+ */
+export function getSingleDynamic(id) {
+  return request(`/dynamics/${id}`, {
+    method: 'GET',
   });
 }
