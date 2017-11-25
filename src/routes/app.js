@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { TabBar } from 'antd-mobile';
 import { routerRedux } from 'dva/router';
 import Icon from '../components/icon';
-import Home from '../routes/home';
+import Home from '../routes/home/test2';
 import ULogin from '../routes/ulogin';
 
 function App({ children, isLogin, location: { pathname }, dispatch }) {

@@ -2258,6 +2258,12 @@ dva-core@^1.1.0:
     redux-saga "^0.15.4"
     warning "^3.0.0"
 
+dva-loading@^1.0.4:
+  version "1.0.4"
+  resolved "http://registry.npm.taobao.org/dva-loading/download/dva-loading-1.0.4.tgz#40dddfba2ddb6e047d42a42dc51d50fad642d02b"
+  dependencies:
+    babel-runtime "^6.26.0"
+
 dva@^2.1.0:
   version "2.1.0"
   resolved "http://registry.npm.taobao.org/dva/download/dva-2.1.0.tgz#5a2ffea411f86d3744e2e9aef3fa0a5db6961e3a"
@@ -7217,6 +7223,10 @@ value-equal@^0.4.0:
 vary@~1.1.2:
   version "1.1.2"
   resolved "http://registry.npm.taobao.org/vary/download/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
+
+vconsole@^3.0.0:
+  version "3.0.0"
+  resolved "http://registry.npm.taobao.org/vconsole/download/vconsole-3.0.0.tgz#54ca3872677e8faf6e42fdfb6111109242e3f09b"
 
 vendors@^1.0.0:
   version "1.0.1"

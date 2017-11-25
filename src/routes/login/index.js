@@ -5,9 +5,6 @@ import { createForm } from 'rc-form';
 
 class BasicInputExample extends React.Component {
   componentDidMount() {
-    setTimeout(() => {
-      this.autoFocusInst.focus();
-    }, 0);
   }
   submit = () => {
     this.props.form.validateFields((error, value) => {

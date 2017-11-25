@@ -2,13 +2,15 @@ import React from 'react';
 import { Router, Route, Switch } from 'dva/router';
 import Contact from './routes/contact';
 import Chat from './routes/chat';
-import App from './routes/app';
+import App from './routes/bpp';
 import AnimateNavios from './components/AnimateNavios';
 import { MixinDialog, dialogOpen } from './components/dialog/test2';
 import Icon from './components/icon';
 import Login from './routes/login';
 import SignUp from './routes/signUp';
-import { Write, Btn } from './routes/write';
+import { Write, WriteBtn } from './routes/write';
+import { Comment, CommentBtn } from './routes/comment';
+import { Forward, ForwardBtn } from './routes/forward';
 
 const dialogConfig = {
   signIn: {
@@ -28,7 +30,21 @@ const dialogConfig = {
     component(props) {
       return <Write {...props} />;
     },
-    rightBtn: <Btn />,
+    rightBtn: <WriteBtn />,
+  },
+  comment: {
+    title: '评论',
+    component(props) {
+      return <Comment {...props} />;
+    },
+    rightBtn: <CommentBtn />,
+  },
+  forward: {
+    title: '转发',
+    component(props) {
+      return <Forward {...props} />;
+    },
+    rightBtn: <ForwardBtn />,
   },
 };
 function RouterConfig({ history }) {

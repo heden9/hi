@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListView, List, PullToRefresh } from 'antd-mobile';
+import { ListView, List } from 'antd-mobile';
 import './style.less';
 import { NavOpen } from '../../components/AnimateNavios';
 
@@ -111,11 +111,11 @@ class Demo extends React.Component {
           <div>{sectionData}</div>
         )}
         renderRow={renderRow}
-        pullToRefresh={<PullToRefresh
-          distanceToRefresh={100}
-          refreshing={this.state.refreshing}
-          onRefresh={this.onRefresh}
-        />}
+        // pullToRefresh={<PullToRefresh
+        //   distanceToRefresh={100}
+        //   refreshing={this.state.refreshing}
+        //   onRefresh={this.onRefresh}
+        // />}
       />
     </div>);
   }

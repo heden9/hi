@@ -1,10 +1,10 @@
 import { Toast } from 'antd-mobile';
-import { postDynamics } from '../services/api_dynamics';
+import { postComment } from '../services/api_dynamics';
 import { dialogClose } from '../components/dialog/test2';
 
 export default {
 
-  namespace: 'write',
+  namespace: 'comment',
 
   state: {
     value: '',
@@ -16,18 +16,18 @@ export default {
   },
 
   effects: {
-    *postDynamics({ payload }, { call, put, select, take }) {  // eslint-disable-line
+    *sendComment({ payload }, { call, put, select }) {  // eslint-disable-line
       const data = yield select(({ write }) => (write.value));
       if (!data.trim()) {
         return;
       }
-      const result = yield call(postDynamics, data);
+      const result = yield call(postComment, { content: data, ...payload });
       if (!result) {
         return;
       }
       Toast.success('发布成功！');
       setTimeout(() => {
-        dialogClose('write');
+        dialogClose('comment');
         put({ type: 'save', payload: { value: '' } });
       }, 100);
       // yield

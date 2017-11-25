@@ -1,0 +1,36 @@
+.message{
+  box-sizing: border-box;
+  max-width: 70%;
+  //background: red;
+  &-sent{
+    align-self: flex-end;
+    margin: 2px 20px 8px 2px;
+    //background: green;
+  }
+  &-received{
+    align-self: flex-start;
+    margin: 2px 2px 8px 20px;
+    .message-text{
+      background-color: #e5e5ea;
+      padding: 12px 22px 18px 42px;
+      border-radius: 16px 16px 16px 0;
+      -webkit-mask-box-image: url('data:image/svg+xml;charset=utf-8,<svg height="60" viewBox="0 0 96 70" width="100" xmlns="http://www.w3.org/2000/svg"><path d="M96 35c1 7-5 37-42 35-37 2-43-28-42-35-1-7 5-37 42-35 37-2 43 28 42 35z"/><path d="M0 70c6-2 12-10 12-19V35l14 27s-8 8-26 8z"/></svg>') 50% 42% 46% 56%;
+      color: #000;
+    }
+  }
+  &-text{
+    font-family: -apple-system,SF UI Text,Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-weight: 400;
+    box-sizing: border-box;
+    padding: 12px 32px 18px;
+    min-width: 96px;
+    min-height: 70px;
+    font-size: 38px;
+    color: white;
+    line-height: 1.2;
+    word-break: break-word;
+    background: #00d449;
+    border-radius: 16px 16px 0 16px;
+    -webkit-mask-box-image: url('data:image/svg+xml;charset=utf-8,<svg height="60" viewBox="0 0 96 70" width="100" xmlns="http://www.w3.org/2000/svg"><path d="M84 35c1 7-5 37-42 35C5 72-1 42 0 35-1 28 5-2 42 0c37-2 43 28 42 35z"/><path d="M96 70c-6-2-12-10-12-19V35L70 62s8 8 26 8z"/></svg>') 50% 56% 46% 42%;
+  }
+}

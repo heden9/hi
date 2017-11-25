@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { ListView, List, Button, Toast } from 'antd-mobile';
+import { List, Button, Toast, ActivityIndicator } from 'antd-mobile';
+import ListView from '../../components/listview';
 import Icon from '../../components/icon';
 import './style.less';
 import { getDynamics, dynamicLikes } from '../../services/api_dynamics';
@@ -11,23 +12,12 @@ import { dialogOpen } from '../../components/dialog/test2';
 const Item = List.Item;
 
 
-function genData2(data) {
-  const dataBlob = {};
-  for (let i = 0; i < data.length; i++) {
-    dataBlob[data[i].id] = data[i];
-  }
-  return dataBlob;
-}
 export default class Demo extends React.Component {
   constructor(props) {
     super(props);
-    const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-    });
     this.fetchData = this.fetchData.bind(this);
-    this.rData = {};
     this.state = {
-      dataSource,
+      dataSource: [],
       isLoading: true,
       offset: 0,
       hasMore: 1,
@@ -77,53 +67,48 @@ export default class Demo extends React.Component {
       this.rData = {};
       Toast.success(`已拉取${dynamics.length}条动态：）`, undefined, undefined, false);
     }
-    this.rData = { ...this.rData, ...genData2(dynamics) };
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      dataSource: this.state.dataSource.concat(dynamics),
       offset,
       hasMore: !!hasMore,
       isLoading: false,
       refreshing: false,
     });
   }
-  renderSeparator = (sectionID, rowID) => (
+  renderFooter = isLoading => (
     <div
-      key={`${sectionID}-${rowID}`}
-      className="separator"
-    />
+      className="home-footer"
+    >{isLoading ? <ActivityIndicator text="正在加载" /> : '到底啦'}</div>
   );
   render() {
+    const { dataSource, isLoading } = this.state;
     return (
       <ListView
-        dataSource={this.state.dataSource}
-        // renderHeader={() => <span>header</span>}
-        renderFooter={() => (<div style={{ height: 30, textAlign: 'center' }}>
-          {this.state.isLoading ? 'Loading...' : 'Loaded'}
-        </div>)}
-        renderRow={row}
-        renderSeparator={this.renderSeparator}
-        className="am-list"
-        pageSize={20}
-        style={{
-          overflow: 'auto',
-          height: '100%',
-        }}
-        scrollRenderAheadDistance={1000}
+        isLoading={isLoading}
+        renderFooter={this.renderFooter}
         onEndReached={this.onEndReached}
-        onEndReachedThreshold={300}
-        // pullToRefresh={<PullToRefresh
-        //   distanceToRefresh={50}
-        //   refreshing={this.state.refreshing}
-        //   onRefresh={this.onRefresh}
-        // />}
+        className="scroll"
+        dataSource={dataSource}
+        row={Row}
       />
     );
   }
 }
-const row = (rowData, sectionID, rowID) => {
-  const { headImgUrl, nickname, brief, pubTime, likeNum, commentNum, id, img, isLike } = rowData;
+const Row = (prop) => {
+  const {
+    headImgUrl,
+    nickname,
+    brief,
+    pubTime,
+    likeNum,
+    commentNum,
+    id,
+    img,
+    isLike,
+    isWhole,
+  } = prop;
   return (
-    <div key={rowID} className={'home-row'} onClick={() => open(nickname)}>
+    <div key={id} className={'home-row test2'} onClick={() => open(nickname)}>
       <Item
         align="top"
         thumb={headImgUrl}
@@ -131,7 +116,10 @@ const row = (rowData, sectionID, rowID) => {
         {nickname}
         <div className="time">{pubTime}</div>
       </Item>
-      <div className={'row-brief'}>{brief}</div>
+      <pre className={'row-brief'}>
+        {brief}
+        {!!isWhole || <span className="readMore">阅读全文</span>}
+      </pre>
       {
         img.map(item => (<img src={item} alt="" />))
       }
@@ -173,9 +161,17 @@ class WrapButton extends React.PureComponent {
   state = {
     isLike: this.props.isLike,
     num: this.props.likeNum,
+    loading: false,
   };
   async clickHandle(e) {
     e.stopPropagation();
+    if (this.state.loading) {
+      Toast.info('操作太快啦😣', 1);
+      return;
+    }
+    this.setState({
+      loading: true,
+    });
     const data = await dynamicLikes(this.state.isLike ? 'DELETE' : 'POST', this.props.id);
     if (!data) {
       return;
@@ -184,6 +180,7 @@ class WrapButton extends React.PureComponent {
     this.setState({
       isLike: !this.state.isLike,
       num,
+      loading: false,
     });
   }
   render() {

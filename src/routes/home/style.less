@@ -3,6 +3,10 @@
 .home-row{
   padding: 0 20px;
   animation: fadeIn 400ms ease;
+  background: white;
+  &.test2{
+    margin-bottom: 25px;
+  }
   .btn-group{
     display: flex;
     flex-direction: row;
@@ -47,7 +51,11 @@
     }
   }
   .row-brief{
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    vertical-align: baseline;
     font-size: 32px;
+    line-height: 1.4;
     margin: 15px 0 20px 0;
   }
   .time{
@@ -58,16 +66,32 @@
 .separator{
   background-color: #F5F5F9;
   height: 20px;
-  border-top: 1px solid #ECECED;
-  border-bottom: 1px solid #ECECED;
+  border-top: 1px solid #dadada;
+  border-bottom: 1px solid #dadada;
 }
 
-
+.scroll{
+  margin-top: 25px;
+}
+.home-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
 @keyframes fadeIn {
   from {
     opacity: 0;
   }
   to {
     opacity: 1;
+  }
+}
+.readMore{
+  color: #598abf;
+  &::before {
+    content: "...";
+    font-family: Arial;
+    color: #333;
   }
 }

@@ -33,3 +33,14 @@ export function postDynamics(content, img = []) {
     },
   });
 }
+
+
+export function postComment({ content, dynamicId, pComment = 0 }) {
+  return request(`/comments/${dynamicId}`, {
+    method: 'POST',
+    body: {
+      content,
+      pComment,
+    },
+  });
+}
