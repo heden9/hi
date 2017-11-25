@@ -10,6 +10,7 @@ export default {
     id: '',
     nickname: '',
     headImgUrl: '',
+    token: window.common.readStorage('token'),
   },
 
   subscriptions: {

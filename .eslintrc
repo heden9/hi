@@ -7,6 +7,7 @@
   },
   "rules": {
     "no-plusplus": [0],
+    "no-mixed-operators": [0],
     "arrow-body-style": [0],
     "consistent-return": [0],
     "generator-star-spacing": [0],

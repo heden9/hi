@@ -22,6 +22,7 @@ class write extends React.Component {
     return (
       <div className="write-container">
         <TextareaItem
+          className="write-field"
           value={this.props.value}
           onChange={this.changeHandle}
           placeholder="分享新鲜事..."

@@ -8,6 +8,7 @@ import { MixinDialog, dialogOpen } from './components/dialog/test2';
 import Icon from './components/icon';
 import Login from './routes/login';
 import SignUp from './routes/signUp';
+import Event from './components/dialog/event';
 import { Write, WriteBtn } from './routes/write';
 import { Comment, CommentBtn } from './routes/comment';
 import { Forward, ForwardBtn } from './routes/forward';
@@ -57,7 +58,7 @@ function RouterConfig({ history }) {
             routes={routesConfig}
             main={mainConfig}
           >
-            <div style={{ height: '100%' }}>
+            <div>
               <App {...props} >
                 <Switch>
                   <Route path="/contact" exact component={Contact} />
@@ -99,6 +100,7 @@ const mainConfig = {
   home: {
     title: '动态',
     rightBtn: <Icon type={require('./assets/icon/post.svg')} onClick={() => dialogOpen('write')} />,
+    leftBtn: <Icon type={require('./assets/icon/loading2.svg')} onClick={() => Event.fireEvent('_list_refresh')} />,
   },
   map: {
     title: '地图',

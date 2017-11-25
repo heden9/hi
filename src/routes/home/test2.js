@@ -8,6 +8,7 @@ import './style.less';
 import { getDynamics, dynamicLikes } from '../../services/api_dynamics';
 import { NavOpen } from '../../components/AnimateNavios';
 import { dialogOpen } from '../../components/dialog/test2';
+import Event from '../../components/dialog/event';
 
 const Item = List.Item;
 
@@ -31,6 +32,7 @@ export default class Demo extends React.Component {
 
     // simulate initial Ajax
     this.fetchData();
+    Event.addEvent('_list_refresh', this.onRefresh);
   }
 
 
@@ -53,22 +55,25 @@ export default class Demo extends React.Component {
     this.fetchData(this.state.offset);
   };
   onRefresh = () => {
+    if (this.state && this.state.refreshing || this.state.isLoading) {
+      return;
+    }
     this.setState({ refreshing: true });
     // simulate initial Ajax
-    this.fetchData();
+    window.scrollTo(0, 0);
+    this.fetchData(0, true);
   };
-  async fetchData(now = 0) {
+  async fetchData(now = 0, isRefresh = false) {
     const data = await getDynamics({ offset: now });
     if (!data) {
       return;
     }
     const { dynamics, hasMore, offset } = data;
     if (now === 0) {
-      this.rData = {};
       Toast.success(`已拉取${dynamics.length}条动态：）`, undefined, undefined, false);
     }
     this.setState({
-      dataSource: this.state.dataSource.concat(dynamics),
+      dataSource: isRefresh ? dynamics : this.state.dataSource.concat(dynamics),
       offset,
       hasMore: !!hasMore,
       isLoading: false,
@@ -78,20 +83,23 @@ export default class Demo extends React.Component {
   renderFooter = isLoading => (
     <div
       className="home-footer"
-    >{isLoading ? <ActivityIndicator text="正在加载" /> : '到底啦'}</div>
+    >{isLoading ? <ActivityIndicator text="正在加载" /> : '我也是有底线的'}</div>
   );
   render() {
-    const { dataSource, isLoading } = this.state;
-    return (
+    const { dataSource, isLoading, refreshing } = this.state;
+    return [
+      refreshing ? <div className="center" key={1}><ActivityIndicator text="正在刷新" /></div> : null,
       <ListView
+        key={2}
         isLoading={isLoading}
+        listenNode={window}
         renderFooter={this.renderFooter}
         onEndReached={this.onEndReached}
         className="scroll"
         dataSource={dataSource}
         row={Row}
-      />
-    );
+      />,
+    ];
   }
 }
 const Row = (prop) => {

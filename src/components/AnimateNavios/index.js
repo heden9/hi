@@ -92,9 +92,9 @@ class AnimateNavios extends React.PureComponent {
           >{children}</div>
           {
             (nowPos === 'page2' || turning) &&
-            <div
+            <RightPage
               className={className({
-                // 'blank-2': true,
+                right: true,
                 page: true,
                 'page-on-right': nowPos === 'page1',
                 'page-on-center': nowPos === 'page2',
@@ -103,10 +103,30 @@ class AnimateNavios extends React.PureComponent {
               })}
             >
               {this.renderSubView(this.subViewData)}
-            </div>
+            </RightPage>
           }
         </div>
       </div>
+    );
+  }
+}
+
+class RightPage extends React.PureComponent {
+  componentDidMount() {
+    document.body.addEventListener('scroll', this.func);
+  }
+  componentWillUnmount() {
+    document.body.addEventListener('scroll', this.func);
+  }
+  func = (e) => {
+    e.preventDefault();
+  };
+  render() {
+    return (
+      <div
+        ref={(ref) => { this.page = ref; }}
+        className={this.props.className}
+      >{this.props.children}</div>
     );
   }
 }

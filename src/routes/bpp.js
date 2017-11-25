@@ -1,14 +1,17 @@
-/*eslint-disable*/
 import React from 'react';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import RouterTabBar from '../components/routerTabBar';
-import Icon from '../components/icon';
+import Event from '../components/dialog/event';
 import Home from '../routes/home/test2';
 import ULogin from '../routes/ulogin';
 
+const Item = RouterTabBar.Item;
 function App({ children, isLogin, location: { pathname }, dispatch }) {
   const pressHandle = (selected) => {
+    if (selected === pathname && selected === '/home') {
+      Event.fireEvent('_list_refresh');
+    }
     dispatch(routerRedux.push(selected));
   };
   return (
@@ -16,11 +19,41 @@ function App({ children, isLogin, location: { pathname }, dispatch }) {
       unselectedTintColor="#949494"
       tintColor="#6bc456"
       barTintColor="#fff"
+      keepAliveCom={{
+        selected: pathname === '/home',
+        component: Home,
+      }}
+      content={renderChildren(pathname, children, isLogin)}
     >
-      <div>#</div>
-      <div>#</div>
-      <div>#</div>
-      <div>#</div>
+      <Item
+        onPress={() => pressHandle('/home')}
+        selected={pathname === '/home'}
+        keepAlive
+        icon={require('../assets/icon/home.svg')}
+        selectedIcon={require('../assets/icon/home_fill.svg')}
+        title={'动态'}
+      />
+      <Item
+        onPress={() => pressHandle('/map')}
+        selected={pathname === '/map'}
+        icon={require('../assets/icon/location.svg')}
+        selectedIcon={require('../assets/icon/location_fill.svg')}
+        title={'地图'}
+      />
+      <Item
+        onPress={() => pressHandle('/contact')}
+        selected={pathname === '/contact'}
+        icon={require('../assets/icon/message.svg')}
+        selectedIcon={require('../assets/icon/message_fill.svg')}
+        title={'联系人'}
+      />
+      <Item
+        onPress={() => pressHandle('/mine')}
+        selected={pathname === '/mine'}
+        icon={require('../assets/icon/my.svg')}
+        selectedIcon={require('../assets/icon/my_fill.svg')}
+        title={'我的'}
+      />
     </RouterTabBar>
   );
 }
@@ -32,13 +65,13 @@ function renderChildren(pathname, ele, isLogin) {
   }
   switch (pathname) {
     case '/mine':
-    case '/contact': return ele;
-    default: return null;
+    case '/contact':
+    default: return ele;
   }
 }
-function mapStateToProps({ user: { id } }) {
+function mapStateToProps({ user: { token } }) {
   return ({
-    isLogin: !!id,
+    isLogin: !!token,
   });
 }
 

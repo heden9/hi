@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 
 export default class ListView extends React.PureComponent {
@@ -8,18 +9,20 @@ export default class ListView extends React.PureComponent {
     className: '',
     onEndReached: () => {},
     renderFooter: () => {},
+    scrollEventThrottle: 50,
   };
   componentDidMount() {
-    const { onEndReached } = this.props;
-    const node = this.List.parentNode;
-    node.addEventListener('scroll', () => {
-      const sH = node.scrollHeight;
-      const cH = node.clientHeight;
-      const sT = node.scrollTop;
-      if (sH - cH - sT <= 100) {
+    const { onEndReached, listenNode, scrollEventThrottle } = this.props;
+    const newScroll = _.throttle(() => {
+      const sH = document.documentElement.scrollHeight;
+      const cH = document.documentElement.clientHeight;
+      const sT = document.documentElement.scrollTop || document.body.scrollTop;
+      if (sH - cH - sT <= 200) {
         onEndReached();
+        console.log('end');
       }
-    });
+    }, scrollEventThrottle);
+    listenNode.addEventListener('scroll', newScroll);
   }
   render() {
     const { dataSource, row, className, renderFooter, isLoading } = this.props;
@@ -30,9 +33,7 @@ export default class ListView extends React.PureComponent {
             return row(item, index);
           })
         }
-        {
-          renderFooter(isLoading)
-        }
+        {renderFooter(isLoading)}
       </div>
     );
   }
@@ -45,4 +46,5 @@ ListView.propTypes = {
   className: PropTypes.string,
   onEndReached: PropTypes.func,
   renderFooter: PropTypes.func,
+  scrollEventThrottle: PropTypes.number,
 };
