@@ -106,7 +106,12 @@ const Row = (prop) => {
     isWhole = true,
   } = prop;
   return (
-    <div key={id} className={'home-row test2'} onClick={() => open({ title: nickname, id })}>
+    <div
+      key={id}
+      style={{ backgroundImage: 'url(\'https://img.t.sinajs.cn/t6/skin/public/feed_cover/star_108_os7.png\')' }}
+      className={'home-row test2'}
+      onClick={() => open({ title: nickname, id })}
+    >
       <Item
         align="top"
         thumb={headImgUrl}
@@ -142,7 +147,7 @@ Home.rightBtn = () => {
   return <Icon type={require('../../assets/icon/post.svg')} onClick={() => dialogOpen('write')} />;
 };
 Home.leftBtn = () => {
-  return <Icon type={require('../../assets/icon/loading2.svg')} onClick={() => Event.fireEvent('_list_refresh')} />;
+  return <Icon type={require('../../assets/icon/refresh.svg')} onClick={() => Event.fireEvent('_list_refresh')} />;
 };
 
 Home.Row = Row;
@@ -170,6 +175,12 @@ class WrapButton extends React.PureComponent {
     num: this.props.likeNum,
     loading: false,
   };
+  componentWillReceiveProps({ isLike, likeNum }) {
+    this.setState({
+      isLike,
+      num: likeNum,
+    });
+  }
   async clickHandle(e) {
     e.stopPropagation();
     if (this.state.loading) {
@@ -181,6 +192,9 @@ class WrapButton extends React.PureComponent {
     });
     const data = await dynamicLikes(this.state.isLike ? 'DELETE' : 'POST', this.props.id);
     if (!data) {
+      this.setState({
+        loading: false,
+      });
       return;
     }
     const num = this.state.isLike ? this.state.num - 1 : this.state.num + 1;

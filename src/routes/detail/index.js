@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ActivityIndicator } from 'antd-mobile';
 import { Row } from '../home/test2';
 import { getSingleDynamic } from '../../services/api_dynamics';
+
+import CommentList from './listGroup';
 
 class Detail extends React.PureComponent {
   constructor(...arg) {
@@ -10,7 +13,7 @@ class Detail extends React.PureComponent {
   }
   state = {
     data: null,
-    loading: false,
+    loading: true,
   };
   componentDidMount() {
     this.fetchData();
@@ -27,14 +30,18 @@ class Detail extends React.PureComponent {
     });
   }
   render() {
-    const { data } = this.state;
-    return (
-      <div>
-        {
-          data && <Row {...data} brief={data.content} />
-        }
-      </div>
-    );
+    console.log(window.document.body.style.overflow);
+    const { data, loading } = this.state;
+    if (loading) {
+      return <div className="center" key={1}><ActivityIndicator text="加载中" /></div>;
+    } else {
+      return (
+        <div>
+          <Row {...data} brief={data.content} />
+          <CommentList />
+        </div>
+      );
+    }
   }
 }
 Detail.propTypes = {

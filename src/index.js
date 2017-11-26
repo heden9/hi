@@ -5,7 +5,7 @@ import './index.less';
 import createLoading from 'dva-loading';
 import vconsole from 'vconsole';
 
-// const a = new vconsole();
+const a = new vconsole();
 // 1. Initialize
 const app = dva(createLoading());
 // const overscroll = function (el) {

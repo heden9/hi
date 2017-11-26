@@ -35,9 +35,7 @@ export default class RouterTabBar extends React.PureComponent {
           }}
         >
           {
-            React.Children.map(children, (child) => {
-              return child;
-            })
+            React.Children.map(children, child => child)
           }
         </div>,
         this.node,

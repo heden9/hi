@@ -114,7 +114,7 @@ class RightPage extends React.PureComponent {
     window.document.body.style.overflow = 'hidden';
   }
   componentWillUnmount() {
-    window.document.body.style.overflow = 'auto';
+    window.document.body.style.overflow = 'scroll';
   }
   render() {
     return (
