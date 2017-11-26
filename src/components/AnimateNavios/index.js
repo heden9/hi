@@ -54,6 +54,7 @@ class AnimateNavios extends React.PureComponent {
       });
     }, 400);
   };
+
   /**
    * 打开
    * @param settings
