@@ -7,6 +7,7 @@ import { MixinDialog } from './components/dialog/test2';
 import Contact from './routes/contact';
 import Chat from './routes/chat';
 import App from './routes/bpp';
+import Cpp from './routes/cpp';
 import Login from './routes/login';
 import SignUp from './routes/signUp';
 import Detail from './routes/detail';
@@ -41,6 +42,10 @@ const dialogConfig = {
     rightBtn: <Forward.rightBtn />,
   },
 };
+const keepAlive = {
+  keyName: '/home',
+  Component: Home,
+};
 function RouterConfig({ history }) {
   return (
     <Router history={history}>
@@ -50,16 +55,20 @@ function RouterConfig({ history }) {
             {...props}
             routes={routesConfig}
             main={mainConfig}
+            SlotTabBar={App}
           >
-            <App {...props} >
+            <MixinDialog routes={dialogConfig} />
+            <Cpp
+              keepAlive={keepAlive}
+              {...props}
+            >
               <Switch>
                 <Route path="/contact" exact component={Contact} />
                 <Route path="/home" exact component={() => <div>home</div>} />
                 <Route path="/mine" exact component={() => <div>mine</div>} />
                 <Route path="/map" exact component={() => <div>map</div>} />
               </Switch>
-            </App>
-            <MixinDialog routes={dialogConfig} />
+            </Cpp>
           </AnimateNavios>
       )}
       />

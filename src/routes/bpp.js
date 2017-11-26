@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
-import RouterTabBar from '../components/routerTabBar';
+import RouterTabBar from '../components/routerTabBar/default';
 import Event from '../components/dialog/event';
 import Home from '../routes/home/test2';
 import ULogin from '../routes/ulogin';
@@ -19,11 +19,6 @@ function App({ children, isLogin, location: { pathname }, dispatch }) {
       unselectedTintColor="#949494"
       tintColor="#6bc456"
       barTintColor="#fff"
-      keepAliveCom={{
-        selected: pathname === '/home',
-        component: Home,
-      }}
-      content={renderChildren(pathname, children, isLogin)}
     >
       <Item
         onPress={() => pressHandle('/home')}

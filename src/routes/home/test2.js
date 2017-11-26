@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { List, Button, Toast, ActivityIndicator } from 'antd-mobile';
-import ListView from '../../components/listview';
 import Icon from '../../components/icon';
 import './style.less';
 import { getDynamics, dynamicLikes } from '../../services/api_dynamics';
 import { NavOpen } from '../../components/AnimateNavios';
 import { dialogOpen } from '../../components/dialog/test2';
 import Event from '../../components/dialog/event';
+import MyJRoll from '../../components/myJRoll';
 
 const Item = List.Item;
 
@@ -79,13 +79,11 @@ export default class Home extends React.Component {
     const { dataSource, isLoading, refreshing } = this.state;
     return [
       refreshing ? <div className="center" key={1}><ActivityIndicator text="正在刷新" /></div> : null,
-      <ListView
+      <MyJRoll
         key={2}
         isLoading={isLoading}
-        listenNode={window}
-        renderFooter={this.renderFooter}
         onEndReached={this.onEndReached}
-        className="scroll"
+        renderFooter={this.renderFooter}
         dataSource={dataSource}
         row={Row}
       />,

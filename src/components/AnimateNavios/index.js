@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import className from 'classnames';
-import _ from 'lodash';
 import './style.less';
 import './plus.less';
 import Event from '../dialog/event';
@@ -12,6 +11,7 @@ class AnimateNavios extends React.PureComponent {
     classname: '',
     routes: {},
     main: {},
+    SlotTabBar: () => null,
   };
   constructor(...arg) {
     super(...arg);
@@ -73,7 +73,7 @@ class AnimateNavios extends React.PureComponent {
   };
   render() {
     const { nowPos, turning } = this.state;
-    const { needNav, classname, children, location: { pathname }, main } = this.props;
+    const { needNav, classname, children, location: { pathname }, main, SlotTabBar } = this.props;
     return (
       <div className="pages-body">
         {
@@ -114,6 +114,7 @@ class AnimateNavios extends React.PureComponent {
             </RightPage>
           }
         </div>
+        <SlotTabBar {...this.props} />
       </div>
     );
   }
@@ -122,29 +123,9 @@ class AnimateNavios extends React.PureComponent {
 class RightPage extends React.PureComponent {
   componentDidMount() {
     window.document.body.style.overflow = 'hidden';
-    const u = window.navigator.userAgent;
-    if (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) {
-      this.onTouchMove = _.throttle((e) => {
-        const sT = this.page.scrollTop;
-        const cH = this.page.clientHeight;
-        const sH = this.page.scrollHeight;
-        if (sT + cH >= sH) {
-          e.preventDefault();
-          this.page.scrollTop = sT - 1;
-        } else if (sT <= 0) {
-          e.preventDefault();
-          this.page.scrollTop = 1;
-        }
-      }, 50);
-
-      this.page.addEventListener('touchmove', this.onTouchMove);
-    }
   }
   componentWillUnmount() {
     window.document.body.style.overflow = 'scroll';
-    if (this.onTouchMove) {
-      this.page.removeEventListener('touchmove', this.onTouchMove);
-    }
   }
   render() {
     return (

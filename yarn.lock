@@ -3921,6 +3921,18 @@ istanbul@^0.4.5:
     which "^1.1.1"
     wordwrap "^1.0.0"
 
+jroll-infinite@^2.2.0:
+  version "2.2.0"
+  resolved "http://registry.npm.taobao.org/jroll-infinite/download/jroll-infinite-2.2.0.tgz#b75545afa76e5d8f85691f431106b7bf1ec06649"
+
+jroll-lite@^2.4.11:
+  version "2.4.11"
+  resolved "http://registry.npm.taobao.org/jroll-lite/download/jroll-lite-2.4.11.tgz#0dff1f08d05aee4ef7889a6af163c6113a0c5a32"
+
+jroll@^2.6.0:
+  version "2.6.0"
+  resolved "http://registry.npm.taobao.org/jroll/download/jroll-2.6.0.tgz#8d9916bf461e9688c53993d7c14f16d04172a718"
+
 js-base64@^2.1.9:
   version "2.3.2"
   resolved "http://registry.npm.taobao.org/js-base64/download/js-base64-2.3.2.tgz#a79a923666372b580f8e27f51845c6f7e8fbfbaf"
