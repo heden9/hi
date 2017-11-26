@@ -72,11 +72,14 @@
   position: fixed;
   top: 0;
   left: 0;
-  bottom: 0;
-  right: 0;
+  height: 100%;
   padding-top: @nav-height;
   overflow: auto;
-  //-webkit-overflow-scrolling: touch;
+  >div{
+    height: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
   z-index: 1;
 }
 body{

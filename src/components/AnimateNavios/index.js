@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import className from 'classnames';
+import _ from 'lodash';
 import './style.less';
 import './plus.less';
 import Event from '../dialog/event';
@@ -23,11 +24,18 @@ class AnimateNavios extends React.PureComponent {
   };
   componentDidMount() {
     Event.addEvent('_nav_open', this.openHandle);
+    this.nav.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+    });
   }
   componentWillUnmount() {
     clearTimeout(this.timer);
     Event.removeEvent('_nav_open');
   }
+
+  getRef = (ref) => {
+    this.nav = ref;
+  };
 
   /**
    * 切换
@@ -71,6 +79,7 @@ class AnimateNavios extends React.PureComponent {
           needNav &&
           <Navigator
             {...this.state}
+            getRef={this.getRef}
             classname={classname}
             config={main[pathname.substr(1, 10)]}
             subViewData={this.subViewData}
@@ -112,16 +121,37 @@ class AnimateNavios extends React.PureComponent {
 class RightPage extends React.PureComponent {
   componentDidMount() {
     window.document.body.style.overflow = 'hidden';
+    const u = window.navigator.userAgent;
+    if (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) {
+      this.onTouchMove = _.throttle((e) => {
+        const sT = this.page.scrollTop;
+        const cH = this.page.clientHeight;
+        const sH = this.page.scrollHeight;
+        if (sT + cH >= sH) {
+          e.preventDefault();
+          this.page.scrollTop = sT - 1;
+        } else if (sT <= 0) {
+          e.preventDefault();
+          this.page.scrollTop = 1;
+        }
+      }, 50);
+
+      this.page.addEventListener('touchmove', this.onTouchMove);
+    }
   }
   componentWillUnmount() {
     window.document.body.style.overflow = 'scroll';
+    if (this.onTouchMove) {
+      this.page.removeEventListener('touchmove', this.onTouchMove);
+    }
   }
   render() {
     return (
       <div
-        ref={(ref) => { this.page = ref; }}
         className={this.props.className}
-      >{this.props.children}</div>
+      >
+        <div ref={(ref) => { this.page = ref; }}>{this.props.children}</div>
+      </div>
     );
   }
 }
@@ -136,10 +166,11 @@ AnimateNavios.propTypes = {
 
 
 function Navigator(props) {
-  const { config = {}, nowPos, subViewData, turning, close, classname } = props;
+  const { config = {}, nowPos, subViewData, turning, close, classname, getRef } = props;
   const { title: title2 } = subViewData;
   return (
     <div
+      ref={(ref) => { getRef(ref); }}
       className={className({
         'nav-container': true,
         [classname]: true,
