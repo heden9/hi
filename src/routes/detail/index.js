@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ActivityIndicator } from 'antd-mobile';
-import { Row } from '../home/test2';
+import { Row } from '../home/index';
 import { getSingleDynamic } from '../../services/api_dynamics';
 
 import CommentList from './listGroup';

@@ -1,33 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { ListView, List, Button, Toast } from 'antd-mobile';
+import { List, Button, Toast, ActivityIndicator } from 'antd-mobile';
 import Icon from '../../components/icon';
 import './style.less';
 import { getDynamics, dynamicLikes } from '../../services/api_dynamics';
 import { NavOpen } from '../../components/AnimateNavios';
 import { dialogOpen } from '../../components/dialog/test2';
+import Event from '../../components/dialog/event';
+import MyJRoll from '../../components/myJRoll';
 
 const Item = List.Item;
 
 
-function genData2(data) {
-  const dataBlob = {};
-  for (let i = 0; i < data.length; i++) {
-    dataBlob[data[i].id] = data[i];
-  }
-  return dataBlob;
-}
-export default class Demo extends React.Component {
+export default class Home extends React.Component {
   constructor(props) {
     super(props);
-    const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-    });
     this.fetchData = this.fetchData.bind(this);
-    this.rData = {};
     this.state = {
-      dataSource,
+      dataSource: [],
       isLoading: true,
       offset: 0,
       hasMore: 1,
@@ -41,17 +32,8 @@ export default class Demo extends React.Component {
 
     // simulate initial Ajax
     this.fetchData();
+    Event.addEvent('_list_refresh', this.onRefresh);
   }
-
-
-  // If you use redux, the data maybe at props, you need use `componentWillReceiveProps`
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.dataSource !== this.props.dataSource) {
-  //     this.setState({
-  //       dataSource: this.state.dataSource.cloneWithRows(nextProps.dataSource),
-  //     });
-  //   }
-  // }
 
   onEndReached = () => {
     // load new data
@@ -63,67 +45,71 @@ export default class Demo extends React.Component {
     this.fetchData(this.state.offset);
   };
   onRefresh = () => {
+    if (this.state && this.state.refreshing || this.state.isLoading) {
+      return;
+    }
     this.setState({ refreshing: true });
     // simulate initial Ajax
-    this.fetchData();
+    Event.fireEvent('wrappers', 0, 0);
+    this.fetchData(0, true);
   };
-  async fetchData(now = 0) {
+  async fetchData(now = 0, isRefresh = false) {
     const data = await getDynamics({ offset: now });
     if (!data) {
       return;
     }
     const { dynamics, hasMore, offset } = data;
     if (now === 0) {
-      this.rData = {};
       Toast.success(`已拉取${dynamics.length}条动态：）`, undefined, undefined, false);
     }
-    this.rData = { ...this.rData, ...genData2(dynamics) };
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(this.rData),
+      dataSource: isRefresh ? dynamics : this.state.dataSource.concat(dynamics),
       offset,
       hasMore: !!hasMore,
       isLoading: false,
       refreshing: false,
     });
   }
-  renderSeparator = (sectionID, rowID) => (
+  renderFooter = isLoading => (
     <div
-      key={`${sectionID}-${rowID}`}
-      className="separator"
-    />
+      className="home-footer"
+    >{isLoading ? <ActivityIndicator text="正在加载" /> : '我也是有底线的'}</div>
   );
   render() {
-    return (
-      <ListView
-        dataSource={this.state.dataSource}
-        // renderHeader={() => <span>header</span>}
-        renderFooter={() => (<div style={{ height: 30, textAlign: 'center' }}>
-          {this.state.isLoading ? 'Loading...' : 'Loaded'}
-        </div>)}
-        renderRow={row}
-        renderSeparator={this.renderSeparator}
-        className="am-list"
-        pageSize={20}
-        style={{
-          overflow: 'auto',
-          height: '100%',
-        }}
-        scrollRenderAheadDistance={1000}
+    const { dataSource, isLoading, refreshing } = this.state;
+    return [
+      refreshing ? <div className="center" key={1}><ActivityIndicator text="正在刷新" /></div> : null,
+      <MyJRoll
+        key={2}
+        isLoading={isLoading}
         onEndReached={this.onEndReached}
-        onEndReachedThreshold={300}
-        // pullToRefresh={<PullToRefresh
-        //   distanceToRefresh={50}
-        //   refreshing={this.state.refreshing}
-        //   onRefresh={this.onRefresh}
-        // />}
-      />
-    );
+        renderFooter={this.renderFooter}
+        dataSource={dataSource}
+        row={Row}
+      />,
+    ];
   }
 }
-const row = (rowData, sectionID, rowID) => {
-  const { headImgUrl, nickname, brief, pubTime, likeNum, commentNum, id, img, isLike } = rowData;
+const Row = (prop) => {
+  const {
+    headImgUrl,
+    nickname,
+    brief,
+    pubTime,
+    likeNum,
+    commentNum,
+    id,
+    img = [],
+    isLike = false,
+    isWhole = true,
+  } = prop;
   return (
-    <div key={rowID} className={'home-row'} onClick={() => open(nickname)}>
+    <div
+      key={id}
+      style={{ backgroundImage: 'url(\'https://img.t.sinajs.cn/t6/skin/public/feed_cover/star_108_os7.png\')' }}
+      className={'home-row test2'}
+      onClick={() => open({ title: nickname, id })}
+    >
       <Item
         align="top"
         thumb={headImgUrl}
@@ -131,7 +117,10 @@ const row = (rowData, sectionID, rowID) => {
         {nickname}
         <div className="time">{pubTime}</div>
       </Item>
-      <div className={'row-brief'}>{brief}</div>
+      <pre className={'row-brief'}>
+        {brief}
+        {!!isWhole || <span className="readMore">全文</span>}
+      </pre>
       {
         img.map(item => (<img src={item} alt="" />))
       }
@@ -152,6 +141,15 @@ const row = (rowData, sectionID, rowID) => {
   );
 };
 
+Home.rightBtn = () => {
+  return <Icon type={require('../../assets/icon/post.svg')} onClick={() => dialogOpen('write')} />;
+};
+Home.leftBtn = () => {
+  return <Icon type={require('../../assets/icon/refresh.svg')} onClick={() => Event.fireEvent('_list_refresh')} />;
+};
+
+Home.Row = Row;
+
 function openComment(e) {
   e.stopPropagation();
   dialogOpen('comment');
@@ -160,8 +158,8 @@ function openForward(e) {
   e.stopPropagation();
   dialogOpen('forward');
 }
-function open(title) {
-  NavOpen('detail', { title });
+function open({ title, id }) {
+  NavOpen('detail', { title, id });
 }
 
 
@@ -173,17 +171,35 @@ class WrapButton extends React.PureComponent {
   state = {
     isLike: this.props.isLike,
     num: this.props.likeNum,
+    loading: false,
   };
+  componentWillReceiveProps({ isLike, likeNum }) {
+    this.setState({
+      isLike,
+      num: likeNum,
+    });
+  }
   async clickHandle(e) {
     e.stopPropagation();
+    if (this.state.loading) {
+      Toast.info('操作太快啦😣', 1);
+      return;
+    }
+    this.setState({
+      loading: true,
+    });
     const data = await dynamicLikes(this.state.isLike ? 'DELETE' : 'POST', this.props.id);
     if (!data) {
+      this.setState({
+        loading: false,
+      });
       return;
     }
     const num = this.state.isLike ? this.state.num - 1 : this.state.num + 1;
     this.setState({
       isLike: !this.state.isLike,
       num,
+      loading: false,
     });
   }
   render() {

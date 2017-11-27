@@ -3,7 +3,8 @@
   "scripts": {
     "start": "roadhog server",
     "build": "roadhog build",
-    "lint": "eslint --ext .js src test"
+    "lint": "eslint --ext .js src test",
+    "precommit": "npm run lint -- --fix"
   },
   "engines": {
     "install-node": "6.11.1"
@@ -15,6 +16,7 @@
     "classnames": "^2.2.5",
     "dva": "^2.1.0",
     "dva-loading": "^1.0.4",
+    "iscroll": "^5.2.0",
     "jroll": "^2.6.0",
     "jroll-infinite": "^2.2.0",
     "jroll-lite": "^2.4.11",

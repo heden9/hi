@@ -1,5 +1,4 @@
 import React from 'react';
-import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './style.less';
@@ -13,21 +12,32 @@ export default class RouterTabBar extends React.PureComponent {
     this.node = document.createElement('div');
     document.body.appendChild(this.node);
   }
+  componentDidMount() {
+    this.prevent = (e) => {
+      e.preventDefault();
+    };
+    this.tabbar.addEventListener('touchmove', this.prevent);
+  }
   componentWillUnmount() {
     document.body.removeChild(this.node);
+    this.tabbar.removeEventListener('touchmove', this.prevent);
   }
   render() {
     const { children, barTintColor, unselectedTintColor, content, keepAliveCom } = this.props;
     const { selected, component: Ele } = keepAliveCom;
-    return [
-      <div style={{ display: selected ? 'block' : 'none' }} key={1}>
-        <Ele />
-      </div>,
-      selected || React.Children.map(content, (child) => {
-        return child;
-      }),
-      createPortal(
-        <div
+    return (
+      <div className="tab-container">
+        <div style={{ display: selected ? 'block' : 'none' }} key={1}>
+          <Ele />
+        </div>
+        {
+          selected || React.Children.map(content, (child) => {
+            return child;
+          })
+        }
+        <section
+          key={2}
+          ref={(ref) => { this.tabbar = ref; }}
           className="router-tab-bar"
           style={{
             backgroundColor: barTintColor,
@@ -37,10 +47,9 @@ export default class RouterTabBar extends React.PureComponent {
           {
             React.Children.map(children, child => child)
           }
-        </div>,
-        this.node,
-      ),
-    ];
+        </section>
+      </div>
+    );
   }
 }
 

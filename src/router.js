@@ -6,12 +6,11 @@ import { MixinDialog } from './components/dialog/test2';
 // page
 import Contact from './routes/contact';
 import Chat from './routes/chat';
-import App from './routes/bpp';
-import Cpp from './routes/cpp';
+import App from './routes/app';
 import Login from './routes/login';
 import SignUp from './routes/signUp';
 import Detail from './routes/detail';
-import Home from './routes/home/test2';
+import Home from './routes/home/index';
 import Write from './routes/write';
 import Comment from './routes/comment';
 import Forward from './routes/forward';
@@ -42,10 +41,6 @@ const dialogConfig = {
     rightBtn: <Forward.rightBtn />,
   },
 };
-const keepAlive = {
-  keyName: '/home',
-  Component: Home,
-};
 function RouterConfig({ history }) {
   return (
     <Router history={history}>
@@ -55,20 +50,16 @@ function RouterConfig({ history }) {
             {...props}
             routes={routesConfig}
             main={mainConfig}
-            SlotTabBar={App}
           >
-            <MixinDialog routes={dialogConfig} />
-            <Cpp
-              keepAlive={keepAlive}
-              {...props}
-            >
+            <App {...props} >
               <Switch>
                 <Route path="/contact" exact component={Contact} />
                 <Route path="/home" exact component={() => <div>home</div>} />
                 <Route path="/mine" exact component={() => <div>mine</div>} />
                 <Route path="/map" exact component={() => <div>map</div>} />
               </Switch>
-            </Cpp>
+            </App>
+            <MixinDialog routes={dialogConfig} />
           </AnimateNavios>
       )}
       />
