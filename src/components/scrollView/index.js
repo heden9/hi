@@ -1,4 +1,5 @@
 import React from 'react';
+import { List } from 'antd-mobile';
 import Event from '../dialog/event';
 
 const JRoll = require('iscroll');
@@ -13,7 +14,10 @@ function iScrollClick() {
     return !(parseFloat(s[0] + s[3]) < 44);
   }
 }
-export default class MyJRoll extends React.Component {
+export class ScrollView extends React.Component {
+  static defaultProps = {
+    onEndReached: () => {},
+  };
   constructor(props) {
     super(props);
     this.jroll = null;
@@ -35,8 +39,12 @@ export default class MyJRoll extends React.Component {
         this.props.onEndReached();
       }
     });
-    this.jroll.refresh();
-    Event.addEvent(wrappers, this.jroll.scrollTo.bind(this.jroll));
+    setTimeout(() => {
+      console.log('refresh');
+      this.jroll.refresh();
+    }, 0);
+    Event.addEvent(`${wrappers}_scrollTo`, this.jroll.scrollTo.bind(this.jroll));
+    Event.addEvent(`${wrappers}_refresh`, this.jroll.refresh.bind(this.jroll));
   }
   componentDidUpdate() {
     this.jroll.refresh();
@@ -46,21 +54,46 @@ export default class MyJRoll extends React.Component {
     this.jroll = null;
   }
   render() {
-    const { height } = this.props;
-    const { dataSource, row, isLoading, renderFooter } = this.props;
+    const { height, children } = this.props;
     return (
       <div id={this.props.ID ? this.props.ID : 'wrappers'} style={{ height: height || '100%' }}>
         <ul id="scroller">
-          {
-            dataSource.map((item, index) => {
-              return row(item, index);
-            })
-          }
-          {
-            renderFooter(isLoading)
-          }
+          { children }
         </ul>
       </div>
     );
   }
 }
+
+export default function ListView({ dataSource, row, renderFooter, isLoading, onEndReached }) {
+  return (
+    <ScrollView
+      onEndReached={onEndReached}
+    >
+      {
+        dataSource.map((item, index) => {
+          return row(item, index);
+        })
+      }
+      {
+        renderFooter(isLoading)
+      }
+    </ScrollView>
+  );
+}
+ScrollView.Item = ({ id, headImgUrl, nickname, pubTime, content }) => {
+  return (
+    <div key={id} className="home-row">
+      <List.Item
+        align="top"
+        thumb={headImgUrl}
+      >
+        {nickname}
+        <div className="time">{pubTime}</div>
+      </List.Item>
+      <pre className={'row-brief'}>
+        {content}
+      </pre>
+    </div>
+  );
+};

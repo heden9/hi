@@ -1,65 +1,56 @@
 import React from 'react';
-import ListView from '../../components/listview';
+import { ActivityIndicator } from 'antd-mobile';
+import { ScrollView } from '../../components/scrollView';
+import Event from '../../components/dialog/event';
 
-const data = [
-  {
-    id: 1,
-    headImgUrl: '头像url',
-    nickname: '用户昵称',
-    content: '评论内容',
-    pubTime: '评论时间',
-    pCNickname: '父级评论昵称',
-    likeNum: 2,
-    isLike: true,
-  },
-  {
-    id: 2,
-    headImgUrl: '头像url',
-    nickname: '用户昵称',
-    content: '评论内容',
-    pubTime: '评论时间',
-    pCNickname: '父级评论昵称',
-    likeNum: 2,
-    isLike: true,
-  },
-  {
-    id: 3,
-    headImgUrl: '头像url',
-    nickname: '用户昵称',
-    content: '评论内容',
-    pubTime: '评论时间',
-    pCNickname: '父级评论昵称',
-    likeNum: 2,
-    isLike: true,
-  },
-  {
-    id: 4,
-    headImgUrl: '头像url',
-    nickname: '用户昵称',
-    content: '评论内容',
-    pubTime: '评论时间',
-    pCNickname: '父级评论昵称',
-    likeNum: 2,
-    isLike: true,
-  },
-];
-class CommentList extends React.PureComponent {
-  state = {
-    dataSource: data,
+export function MixinGetfunc(getFunc, type = '评论') {
+  return class CommentList extends React.PureComponent {
+    constructor(...arg) {
+      super(...arg);
+      this.fetchData = this.fetchData.bind(this);
+    }
+    state = {
+      dataSource: [],
+      loading: true,
+    };
+    componentDidMount() {
+      this.fetchData();
+    }
+    componentDidUpdate() {
+      Event.fireEvent('detail_refresh');
+    }
+    async fetchData() {
+      this.setState({
+        loading: true,
+      });
+      const data = await getFunc(this.props.id);
+      if (!data) {
+        this.setState({
+          loading: false,
+        });
+        return;
+      }
+      this.setState({
+        dataSource: this.state.dataSource.concat(data),
+        loading: false,
+      });
+    }
+    render() {
+      const { dataSource, loading } = this.state;
+      return (
+        <div>
+          {
+            loading && <div className="center"><ActivityIndicator text="加载中" /></div>
+          }
+          {
+            dataSource.length === 0 ? <div className="empty">还没有人{type}过</div> :
+              dataSource.map(item => (
+                <ScrollView.Item {...item} key={item.id} />
+              ))
+          }
+        </div>
+      );
+    }
   };
-  componentDidMount() {
-
-  }
-  render() {
-    const { dataSource } = this.state;
-    return (
-      <ListView
-        row={ListView.Item}
-        dataSource={dataSource}
-      />
-    );
-  }
 }
 
-
-export default CommentList;

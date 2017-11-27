@@ -51,6 +51,18 @@ export function postComment({ content, dynamicId, pComment = 0 }) {
   });
 }
 
+
+export function getComment(dynamicId) {
+  return request(`/comments/${dynamicId}`, {
+    method: 'GET',
+  });
+}
+
+export function getDynamicLikes(dynamicId) {
+  return request(`/dynamicLikes/${dynamicId}`, {
+    method: 'GET',
+  });
+}
 /**
  * 获取单条动态
  * @param id

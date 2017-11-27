@@ -7,7 +7,7 @@ import Home from './home/index';
 import ULogin from '../routes/ulogin';
 
 const Item = RouterTabBar.Item;
-function App({ children, isLogin, location: { pathname }, dispatch }) {
+function App({ children, location: { pathname }, dispatch }) {
   const pressHandle = (selected) => {
     if (selected === pathname && selected === '/home') {
       Event.fireEvent('_list_refresh');
@@ -23,7 +23,7 @@ function App({ children, isLogin, location: { pathname }, dispatch }) {
         selected: pathname === '/home',
         component: Home,
       }}
-      content={renderChildren(pathname, children, isLogin)}
+      content={renderChildren(pathname, children)}
     >
       <Item
         onPress={() => pressHandle('/home')}
@@ -59,8 +59,8 @@ function App({ children, isLogin, location: { pathname }, dispatch }) {
 }
 
 
-function renderChildren(pathname, ele, isLogin) {
-  if (!isLogin) {
+function renderChildren(pathname, ele) {
+  if (!window.common.readStorage('token')) {
     return <ULogin />;
   }
   switch (pathname) {
@@ -69,9 +69,8 @@ function renderChildren(pathname, ele, isLogin) {
     default: return ele;
   }
 }
-function mapStateToProps({ user: { token } }) {
+function mapStateToProps() {
   return ({
-    isLogin: !!token,
   });
 }
 

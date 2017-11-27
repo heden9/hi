@@ -8,7 +8,7 @@ import { getDynamics, dynamicLikes } from '../../services/api_dynamics';
 import { NavOpen } from '../../components/AnimateNavios';
 import { dialogOpen } from '../../components/dialog/test2';
 import Event from '../../components/dialog/event';
-import MyJRoll from '../../components/myJRoll';
+import ListView from '../../components/scrollView';
 
 const Item = List.Item;
 
@@ -50,12 +50,15 @@ export default class Home extends React.Component {
     }
     this.setState({ refreshing: true });
     // simulate initial Ajax
-    Event.fireEvent('wrappers', 0, 0);
+    Event.fireEvent('wrappers_scrollTo', 0, 0);
     this.fetchData(0, true);
   };
   async fetchData(now = 0, isRefresh = false) {
     const data = await getDynamics({ offset: now });
     if (!data) {
+      this.setState({
+        isLoading: false,
+      });
       return;
     }
     const { dynamics, hasMore, offset } = data;
@@ -79,7 +82,7 @@ export default class Home extends React.Component {
     const { dataSource, isLoading, refreshing } = this.state;
     return [
       refreshing ? <div className="center" key={1}><ActivityIndicator text="正在刷新" /></div> : null,
-      <MyJRoll
+      <ListView
         key={2}
         isLoading={isLoading}
         onEndReached={this.onEndReached}
