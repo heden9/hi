@@ -38,14 +38,18 @@ export function MixinGetfunc(getFunc, type = '评论') {
     render() {
       const { dataSource, loading } = this.state;
       return (
-        <div>
+        <div className="comment-list">
           {
             loading && <div className="center"><ActivityIndicator text="加载中" /></div>
           }
           {
             dataSource.length === 0 ? <div className="empty">还没有人{type}过</div> :
               dataSource.map(item => (
-                <ScrollView.Item {...item} key={item.id} />
+                <ScrollView.Item
+                  {...item}
+                  className={type === '评论' && 'comment'}
+                  key={item.id}
+                />
               ))
           }
         </div>

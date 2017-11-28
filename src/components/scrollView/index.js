@@ -1,6 +1,8 @@
 import React from 'react';
 import { List } from 'antd-mobile';
+import classnames from 'classnames';
 import Event from '../dialog/event';
+import Icon from '../../components/icon';
 
 const JRoll = require('iscroll');
 
@@ -81,19 +83,27 @@ export default function ListView({ dataSource, row, renderFooter, isLoading, onE
     </ScrollView>
   );
 }
-ScrollView.Item = ({ id, headImgUrl, nickname, pubTime, content }) => {
+const Brief = List.Item.Brief;
+ScrollView.Item = ({ id, headImgUrl, className = '', nickname, pubTime, content, likeNum }) => {
   return (
-    <div key={id} className="home-row">
+    <div
+      key={id}
+      className={classnames({
+        'home-row': true,
+        [className]: true,
+      })}
+    >
       <List.Item
         align="top"
+        extra={!!likeNum && <Icon type={require('../../assets/icon/appreciate.svg')} />}
         thumb={headImgUrl}
       >
         {nickname}
         <div className="time">{pubTime}</div>
+        {
+          content && <Brief>{content}</Brief>
+        }
       </List.Item>
-      <pre className={'row-brief'}>
-        {content}
-      </pre>
     </div>
   );
 };
