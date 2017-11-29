@@ -1,10 +1,11 @@
 {
   "private": true,
   "scripts": {
-    "start": "roadhog server",
+    "dev": "roadhog server",
     "build": "roadhog build",
     "lint": "eslint --ext .js src test",
-    "precommit": "npm run lint -- --fix"
+    "precommit": "npm run lint -- --fix",
+    "start": "nodemon server/index.js"
   },
   "engines": {
     "install-node": "6.11.1"
@@ -32,6 +33,8 @@
     "babel-plugin-dva-hmr": "^0.3.2",
     "babel-plugin-import": "^1.6.2",
     "babel-plugin-transform-runtime": "^6.9.0",
+    "babel-register": "^6.26.0",
+    "cheerio": "^1.0.0-rc.2",
     "eslint": "^3.12.2",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",
@@ -39,10 +42,16 @@
     "eslint-plugin-react": "^6.8.0",
     "expect": "^1.20.2",
     "husky": "^0.12.0",
+    "koa": "^2.0.0-alpha.8",
+    "koa-better-router": "^2.1.1",
+    "koa-route": "^3.2.0",
+    "koa-static": "^4.0.2",
+    "koa-static-server": "^1.3.2",
     "postcss-pxtorem": "^4.0.1",
     "react-sticky": "^6.0.1",
     "redbox-react": "^1.4.3",
     "roadhog": "^1.2.1",
+    "socket.io": "^2.0.4",
     "vconsole": "^3.0.0"
   }
 }
