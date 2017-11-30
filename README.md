@@ -15,4 +15,4 @@
 ### 截图
 
 ![](https://github.com/w771854332/-/blob/master/screenshot/QQ20171130-195803.gif?raw=true)
-![](https://github.com/w771854332/-/blob/master/screenshot/QQ20171130-195637@2x.gif?raw=true)
+![](https://github.com/w771854332/-/blob/master/screenshot/QQ20171130-201129.gif?raw=true)
