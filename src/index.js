@@ -5,7 +5,7 @@ import './index.less';
 import createLoading from 'dva-loading';
 import vconsole from 'vconsole';
 
-// const a = new vconsole();
+const a = new vconsole();
 // 1. Initialize
 const app = dva(createLoading());
 
@@ -17,7 +17,7 @@ const app = dva(createLoading());
 app.model(require('./models/user'));
 app.model(require('./models/write'));
 app.model(require('./models/comment'));
-// app.model(require('./models/socket'));
+app.model(require('./models/chat'));
 
 // 4. Router
 app.router(require('./router'));

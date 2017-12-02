@@ -9,7 +9,7 @@ import { ScrollView } from '../../components/scrollView';
 const info = {
   A: [
     {
-      id: 1,
+      id: 10,
       headImgUrl: 'https://avatars1.githubusercontent.com/u/27012143?s=460&v=4',
       nickname: '小禾登',
     },
@@ -26,7 +26,7 @@ const info = {
   ],
   B: [
     {
-      id: 4,
+      id: 13,
       headImgUrl: 'https://tva3.sinaimg.cn/crop.0.0.996.996.180/006aysN4jw8f924ehkvtgj30ro0rp766.jpg',
       nickname: 'InkCherry',
     },
@@ -56,7 +56,7 @@ const info = {
       nickname: '用户7',
     },
     {
-      id: 10,
+      id: 16,
       headImgUrl: 'https://avatars1.githubusercontent.com/u/27012143?s=460&v=4',
       nickname: '用户7',
     },
@@ -115,13 +115,16 @@ class Demo extends React.Component {
       });
     }, 600);
   };
-  renderRow = ({ headImgUrl, nickname }) => {
-    const { headImgUrl_me } = this.props;
+  renderRow = ({ headImgUrl, nickname, id: rId }) => {
+    const { headImgUrl_me, id_me } = this.props;
     function open() {
       NavOpen('chat', {
         title: nickname,
-        sent: { headImgUrl: headImgUrl_me },
-        received: { headImgUrl, nickname },
+        sent: {
+          headImgUrl: headImgUrl_me,
+          id: id_me,
+        },
+        received: { headImgUrl, nickname, id: rId },
       });
     }
     return (
@@ -156,9 +159,10 @@ class Demo extends React.Component {
   }
 }
 
-function mapStateToProps({ user: { headImgUrl } }) {
+function mapStateToProps({ user: { headImgUrl, id } }) {
   return {
     headImgUrl_me: headImgUrl,
+    id_me: id,
   };
 }
 

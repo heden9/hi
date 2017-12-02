@@ -2,9 +2,7 @@ import { Toast } from 'antd-mobile';
 import { signIn, signUp, checkLogin } from '../services/api_user';
 import { dialogClose } from '../components/dialog/test2';
 
-const io = require('socket.io-client');
-
-const socket = io('http://localhost:3000');
+import { socket } from '../services/api_socket';
 
 export default {
 
