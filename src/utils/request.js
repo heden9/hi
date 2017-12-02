@@ -31,7 +31,7 @@ export default function request(url, options) {
   newOptions.headers = {
     Accept: 'application/json',
     'Content-Type': 'application/json; charset=utf-8',
-    token: window.common.readStorage('token'),
+    token: window.common.readCookie('token'),
     ...newOptions.headers,
   };
   newOptions.body = JSON.stringify(newOptions.body);
@@ -49,10 +49,10 @@ export default function request(url, options) {
 function checkCode({ code, data, message, token }) {
   switch (code) {
     case 0:
-      window.common.writeStorage('token', token);
+      window.common.writeCookie('token', token, 7);
       return data;
     case 2:
-      window.common.writeStorage('token', '');
+      window.common.writeCookie('token', '');
       dialogOpen('signIn');
     default: throw new Error(message);
   }

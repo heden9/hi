@@ -3,6 +3,8 @@ const fs = require('fs');
 const serve = require('koa-static');
 const router = require('koa-router')();
 const bodyParser = require('koa-bodyparser');
+const cookieParser = require('cookie-parser');
+
 const app = new Koa();
 
 const server = require('http').Server(app.callback());
@@ -31,6 +33,7 @@ app.use(async (ctx, next) => {
 app.use(bodyParser({
   enableTypes: ['json', 'form', 'text'],
 }));
+app.use(cookieParser());
 // router
 app.use(router.routes());
 router.post('/dynamicLikes', async (ctx, next) => {

@@ -1,6 +1,10 @@
 import { Toast } from 'antd-mobile';
-import { signIn, signUp } from '../services/api_user';
+import { signIn, signUp, checkLogin } from '../services/api_user';
 import { dialogClose } from '../components/dialog/test2';
+
+const io = require('socket.io-client');
+
+const socket = io('http://localhost:3000');
 
 export default {
 
@@ -14,6 +18,21 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
+      socket.on('connect', () => {
+        console.log('connect');
+        // Toast.fail('连接成功~', 2);
+      });
+      socket.on('disconnect', () => {
+        console.log('dis');
+      });
+      socket.on('receive_message', (data) => {
+        console.log(data);
+      });
+      socket.on('login_feedback', () => {
+        // console.log(data);
+        // window.common.writeStorage('token', data.token);
+        // dispatch({ type: 'save', payload: { ...data } });
+      });
     },
   },
 
@@ -24,6 +43,8 @@ export default {
         return;
       }
       Toast.success('登录成功：）', undefined, undefined, false);
+      socket.open();
+      socket.emit('enter', { ...data, token: window.common.readCookie('token') });
       setTimeout(() => {
         dialogClose('signIn');
       }, 100);
@@ -40,11 +61,25 @@ export default {
       }, 100);
       yield put({ type: 'save', payload: data });
     },
+    *autoLogin({ payload }, { call, put, select }) {  // eslint-disable-line
+      const data = yield call(checkLogin);
+      if (!data) {
+        socket.disconnect();
+        return;
+      }
+      socket.emit('enter', { ...data, token: window.common.readCookie('token') });
+      yield put({ type: 'save', payload: data });
+    },
+    *signOut({ payload }, { call, put, select }) {  // eslint-disable-line
+      window.common.writeCookie('token', '');
+      socket.disconnect();
+      yield put({ type: 'save', payload: {} });
+    },
   },
 
   reducers: {
-    save(state, action) {
-      return { ...state, ...action.payload };
+    save(state, { payload: { id, headImgUrl, nickname } }) {
+      return { ...state, id, headImgUrl, nickname };
     },
   },
 

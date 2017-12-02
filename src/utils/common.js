@@ -26,5 +26,30 @@
       requestAnimationFrame(animation);
     };
     requestAnimationFrame(animation);
-  }
+  };
+  // 读取cookie
+  common.readCookie = function(key) {
+    if (document.cookie.length > 0) {
+      let start = document.cookie.indexOf(key + '=');
+      if (start !== -1) {
+        start = start + key.length + 1;
+        let end = document.cookie.indexOf(';', start);
+        if (end === -1) {
+          end = document.cookie.length;
+        }
+        return unescape(document.cookie.substring(start, end));
+      }
+    }
+    return '';
+  };
+  // 写cookie
+  common.writeCookie = function(key, value, expiresDays) {
+    const date = new Date();
+    const days = isNaN(expiresDays) ? 365 : expiresDays;
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = date.toGMTString();
+    const cookiestr = key + '=' + value + '; expires=' + expires + '; path=/';
+
+    document.cookie = cookiestr;
+  };
 }(window, document));

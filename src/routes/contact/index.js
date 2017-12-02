@@ -116,11 +116,11 @@ class Demo extends React.Component {
     }, 600);
   };
   renderRow = ({ headImgUrl, nickname }) => {
-    const { headImgUlr_me } = this.props;
+    const { headImgUrl_me } = this.props;
     function open() {
       NavOpen('chat', {
         title: nickname,
-        sent: { headImgUrl: headImgUlr_me },
+        sent: { headImgUrl: headImgUrl_me },
         received: { headImgUrl, nickname },
       });
     }

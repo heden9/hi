@@ -12,3 +12,8 @@ export function signUp({ username, password }) {
     body: { username, password },
   });
 }
+export function checkLogin() {
+  return request('/transToken', {
+    method: 'POST',
+  });
+}

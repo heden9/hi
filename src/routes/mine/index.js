@@ -4,6 +4,7 @@ import { Carousel, List } from 'antd-mobile';
 import Icon from '../../components/icon';
 import { ScrollView } from '../../components/scrollView';
 import './style.less';
+// import { dialogOpen } from '../../components/dialog/test2';
 
 const Item = List.Item;
 
@@ -11,7 +12,7 @@ const url = require('../../assets/img/background-1.png');
 
 const url2 = 'https://tvax3.sinaimg.cn/crop.0.0.996.996.180/005OxMBKly8fg4vexj8lgj30ro0rot9u.jpg';
 
-function Mine({ nickname = '可爱小弱鸡', headImgUrl = url2 }) {
+function Mine({ nickname = '可爱小弱鸡', headImgUrl = url2, signOut }) {
   return (
     <ScrollView ID="mine">
       <Carousel
@@ -57,7 +58,7 @@ function Mine({ nickname = '可爱小弱鸡', headImgUrl = url2 }) {
         >主题</Item>
       </List>
       <Item
-        onClick={() => {}}
+        onClick={signOut}
       ><div className="sign-out-btn">退出登录</div></Item>
     </ScrollView>
   );
@@ -88,5 +89,12 @@ function mapStateToProps({ user: { nickname, headImgUrl } }) {
     headImgUrl,
   };
 }
-
-export default connect(mapStateToProps)(Mine);
+function mapDispatchToProps(dispatch) {
+  return {
+    signOut() {
+      dispatch({ type: 'user/signOut' });
+      // dialogOpen('signIn');
+    },
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Mine);

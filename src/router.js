@@ -2,7 +2,7 @@ import React from 'react';
 import { Router, Route, Switch, Redirect } from 'dva/router';
 import AnimateNavios from './components/AnimateNavios';
 import { MixinDialog } from './components/dialog/test2';
-// import CreateSocketConnect from './components/createSocketConnect';
+import CreateSocketConnect from './components/createSocketConnect';
 // page
 import Contact from './routes/contact';
 import Chat from './routes/chat';
@@ -62,7 +62,8 @@ function RouterConfig({ history }) {
               </Switch>
             </App>
             <MixinDialog routes={dialogConfig} />
-            {/* <CreateSocketConnect />*/}
+            {/* */}
+            <CreateSocketConnect />
           </AnimateNavios>
       )}
       />

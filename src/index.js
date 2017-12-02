@@ -17,6 +17,7 @@ const app = dva(createLoading());
 app.model(require('./models/user'));
 app.model(require('./models/write'));
 app.model(require('./models/comment'));
+// app.model(require('./models/socket'));
 
 // 4. Router
 app.router(require('./router'));

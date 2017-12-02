@@ -37,6 +37,7 @@
     "babel-plugin-transform-runtime": "^6.9.0",
     "babel-register": "^6.26.0",
     "cheerio": "^1.0.0-rc.2",
+    "cookie-parser": "^1.4.3",
     "eslint": "^3.12.2",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",
