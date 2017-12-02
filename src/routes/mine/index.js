@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Carousel, List } from 'antd-mobile';
 import Icon from '../../components/icon';
+import { ScrollView } from '../../components/scrollView';
 import './style.less';
 
 const Item = List.Item;
@@ -12,7 +13,7 @@ const url2 = 'https://tvax3.sinaimg.cn/crop.0.0.996.996.180/005OxMBKly8fg4vexj8l
 
 function Mine({ nickname = '可爱小弱鸡', headImgUrl = url2 }) {
   return (
-    <div id="mine">
+    <ScrollView ID="mine">
       <Carousel
         autoplay={false}
         infinite
@@ -58,7 +59,7 @@ function Mine({ nickname = '可爱小弱鸡', headImgUrl = url2 }) {
       <Item
         onClick={() => {}}
       ><div className="sign-out-btn">退出登录</div></Item>
-    </div>
+    </ScrollView>
   );
 }
 

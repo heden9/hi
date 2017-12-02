@@ -61,7 +61,7 @@ function App({ children, location: { pathname }, dispatch }) {
 
 function renderChildren(pathname, ele) {
   if (!window.common.readStorage('token')) {
-    return <ULogin />;
+    ele = ULogin; // eslint-disable-line
   }
   switch (pathname) {
     case '/mine':

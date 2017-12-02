@@ -2,7 +2,21 @@
   display: flex;
   flex-direction: column;
   background: white;
-  //overflow-y: scroll;
-  //-webkit-overflow-scrolling: touch;
+  padding-bottom: 90px;
 
+}
+#chat{
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: white;
+  >ul{
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+.send-input{
+  min-height: 90px;
+  position: absolute;
+  width: 100%;
+  bottom: -1px;
 }

@@ -10,11 +10,6 @@ import vconsole from 'vconsole';
 const app = dva(createLoading());
 
 
-
-
-
-
-
 // 2. Plugins
 // app.use({});
 

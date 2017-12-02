@@ -87,6 +87,7 @@ const routesConfig = {
 const mainConfig = {
   contact: {
     title: '联系人',
+    rightBtn: <Contact.rightBtn />,
   },
   mine: {
     title: '我的',

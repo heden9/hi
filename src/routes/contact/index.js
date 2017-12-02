@@ -1,6 +1,8 @@
 import React from 'react';
-import { ListView, List } from 'antd-mobile';
+import { connect } from 'dva';
+import { ListView, List, Toast, Modal } from 'antd-mobile';
 import './style.less';
+import Icon from '../../components/icon';
 import { NavOpen } from '../../components/AnimateNavios';
 import { ScrollView } from '../../components/scrollView';
 
@@ -113,6 +115,24 @@ class Demo extends React.Component {
       });
     }, 600);
   };
+  renderRow = ({ headImgUrl, nickname }) => {
+    const { headImgUlr_me } = this.props;
+    function open() {
+      NavOpen('chat', {
+        title: nickname,
+        sent: { headImgUrl: headImgUlr_me },
+        received: { headImgUrl, nickname },
+      });
+    }
+    return (
+      <Item
+        className={'contact-item'}
+        thumb={headImgUrl}
+        arrow={'horizontal'}
+        onClick={open}
+      >{nickname}</Item>
+    );
+  };
   render() {
     return (
       <ListView
@@ -125,7 +145,7 @@ class Demo extends React.Component {
         renderScrollComponent={() => (
           <ScrollView ID="contact" className="contact-container" />
         )}
-        renderRow={renderRow}
+        renderRow={this.renderRow}
         // pullToRefresh={<PullToRefresh
         //   distanceToRefresh={100}
         //   refreshing={this.state.refreshing}
@@ -136,18 +156,32 @@ class Demo extends React.Component {
   }
 }
 
-export default Demo;
-
-function renderRow({ headImgUrl, nickname }) {
-  function open() {
-    NavOpen('chat', { title: nickname });
-  }
-  return (
-    <Item
-      className={'contact-item'}
-      thumb={headImgUrl}
-      arrow={'horizontal'}
-      onClick={open}
-    >{nickname}</Item>
-  );
+function mapStateToProps({ user: { headImgUrl } }) {
+  return {
+    headImgUrl_me: headImgUrl,
+  };
 }
+
+const Contact = connect(mapStateToProps)(Demo);
+Contact.rightBtn = () => {
+  return (
+    <Icon
+      type={require('../../assets/icon/search.svg')}
+      onClick={() => Modal.prompt('添加好友', '',
+        [
+        { text: '取消' },
+          {
+            text: '确定',
+            onPress: value => new Promise((resolve) => {
+              Toast.info('onPress promise', 1);
+              setTimeout(() => {
+                resolve();
+                console.log(`value:${value}`);
+              }, 1000);
+            }),
+          },
+        ], 'default', null, ['请输入他/她的昵称'])}
+    />
+  );
+};
+export default Contact;
