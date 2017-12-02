@@ -8,8 +8,8 @@ export default {
 
   state: {
     id: '',
-    nickname: '',
-    headImgUrl: '',
+    nickname: undefined,
+    headImgUrl: undefined,
   },
 
   subscriptions: {

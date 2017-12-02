@@ -38,7 +38,12 @@
     }
     .nav-btn {
       font-size: 30px;
-      width: 200px;
+      width: 150px;
+      >span{
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
       &:first-child{
         display: flex;
         justify-content: flex-start;

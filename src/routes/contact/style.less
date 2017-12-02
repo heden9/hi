@@ -1,16 +1,29 @@
-.contact-container{
+#contact{
   height: 100%;
   display: flex;
   flex-direction: column;
-  .contact-item {
-    height: 130px;
+  .am-list-body>.am-list-item{
+    //position: -webkit-sticky; position:sticky; top: 88px;
+    background-color: #efeff4;
+    height: 50px;
+    .section-header{
+      color: @primary-grey !important;
+    }
+    min-height: 50px;
+  }
+  .am-list-content{
+    padding: 0;
+  }
+  .contact-item{
+    height: 120px;
+    //background-color: transparent;
     .am-list-thumb{
       border-radius: 50%;
       overflow: hidden;
     }
     img{
-      height: 90px;
-      width: 90px;
+      height: 80px;
+      width: 80px;
     }
   }
   .am-list-header{

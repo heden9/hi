@@ -1,8 +1,8 @@
 import React from 'react';
-import { Router, Route, Switch } from 'dva/router';
+import { Router, Route, Switch, Redirect } from 'dva/router';
 import AnimateNavios from './components/AnimateNavios';
 import { MixinDialog } from './components/dialog/test2';
-import CreateSocketConnect from './components/createSocketConnect';
+// import CreateSocketConnect from './components/createSocketConnect';
 // page
 import Contact from './routes/contact';
 import Chat from './routes/chat';
@@ -14,6 +14,7 @@ import Home from './routes/home/index';
 import Write from './routes/write';
 import Comment from './routes/comment';
 import Forward from './routes/forward';
+import Mine from './routes/mine';
 
 
 const dialogConfig = {
@@ -55,12 +56,13 @@ function RouterConfig({ history }) {
               <Switch>
                 <Route path="/contact" exact component={Contact} />
                 <Route path="/home" exact component={() => <div>home</div>} />
-                <Route path="/mine" exact component={() => <div>mine</div>} />
+                <Route path="/mine" exact component={Mine} />
                 <Route path="/map" exact component={() => <div>map</div>} />
+                <Redirect from="/" to="/home" />
               </Switch>
             </App>
             <MixinDialog routes={dialogConfig} />
-            <CreateSocketConnect />
+            {/* <CreateSocketConnect />*/}
           </AnimateNavios>
       )}
       />

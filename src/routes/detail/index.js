@@ -59,7 +59,7 @@ class Detail extends React.PureComponent {
             activeIndex={activeIndex}
           >
             <Item
-              title={'评论'}
+              tiwtle={'评论'}
             >
               <CommentList id={id} />
             </Item>
