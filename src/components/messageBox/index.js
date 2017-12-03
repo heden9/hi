@@ -2,6 +2,9 @@ import React from 'react';
 import classnames from 'classnames';
 import './style.less';
 
+const moment = require('moment');
+
+
 export default function MessageBox({ type = 'sent', headImgUrl, text, time }) {
   return (
     <div
@@ -14,7 +17,7 @@ export default function MessageBox({ type = 'sent', headImgUrl, text, time }) {
       <div className="message-text">
         {text}
         <div className="message-date">
-          {time}
+          {moment(time).format('dddd h:mm a')}
         </div>
       </div>
     </div>

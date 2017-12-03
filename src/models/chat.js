@@ -6,6 +6,7 @@ export default {
 
   state: {
     messageQ: [],
+    unreadMsgQ: {},
   },
 
   subscriptions: {

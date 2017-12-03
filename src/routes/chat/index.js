@@ -9,20 +9,24 @@ import Event from '../../components/dialog/event';
 class Chat extends React.PureComponent {
   componentDidMount() {
     console.log(this.props);
-    Event.fireEvent('chat_scrollToBottom');
     this.props.initMsg();
+  }
+  componentDidUpdate() {
+    console.log('update');
+    // Event.fireEvent(`chat_${this.props.received.id}_refresh`);
+    Event.fireEvent(`chat_${this.props.received.id}_scrollToBottom`);
   }
   componentWillUnmount() {
     this.props.saveMsg();
   }
   onFocus = () => {
-    Event.fireEvent('chat_refresh');
+    Event.fireEvent(`chat_${this.props.received.id}_refresh`);
   };
   render() {
     const { sendMsg, messageQ } = this.props;
     return (
-      <div style={{ height: '100%' }}>
-        <ScrollView ID="chat">
+      <div style={{ height: '100%', background: 'white' }}>
+        <ScrollView ID={`chat_${this.props.received.id}`}>
           <div className="chat-container">
             {
               messageQ.map(({ type, messages, time }) => {

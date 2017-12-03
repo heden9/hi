@@ -22,6 +22,7 @@
     "jroll-infinite": "^2.2.0",
     "jroll-lite": "^2.4.11",
     "lodash": "^4.17.4",
+    "moment": "^2.19.3",
     "prop-types": "^15.6.0",
     "rc-form": "^2.0.0",
     "react": "^16.1.1",

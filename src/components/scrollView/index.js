@@ -46,7 +46,7 @@ export class ScrollView extends React.Component {
       this.jroll.refresh();
     }, 0);
     Event.addEvent(`${wrappers}_scrollTo`, this.jroll.scrollTo.bind(this.jroll));
-    Event.addEvent(`${wrappers}_scrollToBottom`, this.jroll.scrollTo.bind(this.jroll, 0, this.jroll.maxScrollY));
+    Event.addEvent(`${wrappers}_scrollToBottom`, this.test);
     Event.addEvent(`${wrappers}_refresh`, this.jroll.refresh.bind(this.jroll));
   }
   componentDidUpdate() {
@@ -56,10 +56,13 @@ export class ScrollView extends React.Component {
     const wrappers = this.props.ID || 'wrappers';
     this.jroll.destroy();
     this.jroll = null;
-    Event.fireEvent(`${wrappers}_scrollTo`);
-    Event.fireEvent(`${wrappers}_scrollToBottom`);
-    Event.fireEvent(`${wrappers}_refresh`);
+    Event.removeEvent(`${wrappers}_scrollTo`);
+    Event.removeEvent(`${wrappers}_scrollToBottom`);
+    Event.removeEvent(`${wrappers}_refresh`);
   }
+  test = () => {
+    this.jroll.scrollTo.call(this.jroll, 0, this.jroll.maxScrollY);
+  };
   render() {
     const { height, children } = this.props;
     return (
