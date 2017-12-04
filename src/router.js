@@ -15,6 +15,7 @@ import Write from './routes/write';
 import Comment from './routes/comment';
 import Forward from './routes/forward';
 import Mine from './routes/mine';
+import Map from './routes/map';
 
 
 const dialogConfig = {
@@ -57,7 +58,7 @@ function RouterConfig({ history }) {
                 <Route path="/contact" exact component={Contact} />
                 <Route path="/home" exact component={() => <div>home</div>} />
                 <Route path="/mine" exact component={Mine} />
-                <Route path="/map" exact component={() => <div>map</div>} />
+                <Route path="/map" exact component={Map} />
                 <Redirect from="/" to="/home" />
               </Switch>
             </App>

@@ -94,7 +94,11 @@ class TextInput extends React.PureComponent {
     });
   };
   submitHandle = () => {
-    this.props.onSubmit(this.state.value.trim());
+    const text = this.state.value.trim();
+    if (!text) {
+      return;
+    }
+    this.props.onSubmit(text);
     this.changeHandle('');
   };
   render() {

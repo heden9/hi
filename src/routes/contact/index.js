@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { ListView, List, Toast, Modal } from 'antd-mobile';
+import { ListView, List, Toast, Modal, Badge } from 'antd-mobile';
 import './style.less';
 import Icon from '../../components/icon';
 import { NavOpen } from '../../components/AnimateNavios';
@@ -63,7 +63,7 @@ const info = {
   ],
 };
 const { Item } = List;
-function genData(ds, data) {
+function genData(ds, data, unread) {
   const dataBlob = {};
   const sectionIDs = [];
   const rowIDs = [];
@@ -73,14 +73,15 @@ function genData(ds, data) {
     rowIDs[index] = [];
 
     data[item].forEach((jj) => {
+      const arr = unread[jj.id] || [];
       rowIDs[index].push(jj.id);
-      dataBlob[jj.id] = jj;
+      dataBlob[jj.id] = { ...jj, badge: arr.length };
     });
   });
   return ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs);
 }
 
-class Demo extends React.Component {
+class Demo extends React.PureComponent {
   constructor(props) {
     super(props);
     const getSectionData = (dataBlob, sectionID) => dataBlob[sectionID];
@@ -94,13 +95,17 @@ class Demo extends React.Component {
     });
 
     this.state = {
-      dataSource: genData(dataSource, info),
+      dataSource: genData(dataSource, info, this.props.unreadMsgQ),
       refreshing: false,
     };
   }
 
   componentDidMount() {
-    this.onRefresh();
+  }
+  componentWillReceiveProps(props) {
+    this.setState({
+      dataSource: genData(this.state.dataSource, info, props.unreadMsgQ),
+    });
   }
   componentWillUnmount() {
     clearTimeout(this.timer);
@@ -115,7 +120,7 @@ class Demo extends React.Component {
       });
     }, 600);
   };
-  renderRow = ({ headImgUrl, nickname, id: rId }) => {
+  renderRow = ({ headImgUrl, nickname, id: rId, badge }) => {
     const { headImgUrl_me, id_me } = this.props;
     function open() {
       NavOpen('chat', {
@@ -129,6 +134,7 @@ class Demo extends React.Component {
     }
     return (
       <Item
+        extra={<Badge text={badge} overflowCount={99} />}
         className={'contact-item'}
         thumb={headImgUrl}
         arrow={'horizontal'}
@@ -136,6 +142,7 @@ class Demo extends React.Component {
       >{nickname}</Item>
     );
   };
+
   render() {
     return (
       <ListView
@@ -159,10 +166,11 @@ class Demo extends React.Component {
   }
 }
 
-function mapStateToProps({ user: { headImgUrl, id } }) {
+function mapStateToProps({ user: { headImgUrl, id }, chat: { unreadMsgQ } }) {
   return {
     headImgUrl_me: headImgUrl,
     id_me: id,
+    unreadMsgQ,
   };
 }
 
