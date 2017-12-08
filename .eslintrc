@@ -5,6 +5,11 @@
     "window":true,
     "document":true
   },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
   "rules": {
     "no-plusplus": [0],
     "no-mixed-operators": [0],

@@ -1,0 +1,17 @@
+{
+  "presets": [
+    ["es2015", { "loose": true }],  // loose是一个比较松散的版本
+    "stage-1",
+    "react"
+  ],
+  "plugins": [
+    "transform-runtime",
+    ["import", { "libraryName": "antd-mobile", "style": true }],
+    "react-hot-loader/babel" // 配置react的热更新
+  ],
+  "env": {
+    "development": {
+      "plugins": ["dva-hmr"]
+    }
+  }
+}
