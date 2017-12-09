@@ -6742,7 +6742,7 @@ rn-topview@^0.1.6:
   version "0.1.6"
   resolved "http://registry.npm.taobao.org/rn-topview/download/rn-topview-0.1.6.tgz#b1b1216caf730f8547cd23c9b918ad0288454b11"
 
-roadhog@^1.2.1:
+roadhog@^1.3.1:
   version "1.3.1"
   resolved "http://registry.npm.taobao.org/roadhog/download/roadhog-1.3.1.tgz#68fd83277f535eb49923e82e0e054aee7bbf378c"
   dependencies:

@@ -3,7 +3,7 @@ import dva from 'dva';
 import './utils/common';
 import './index.less';
 import createLoading from 'dva-loading';
-import vconsole from 'vconsole';
+// import vconsole from 'vconsole';
 
 // const a = new vconsole();
 // 1. Initialize

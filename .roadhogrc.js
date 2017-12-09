@@ -20,7 +20,8 @@ export default {
     '@primary-grey': '#949494',
     '@hd': '2px',
   },
-  disableCSSModules : true ,
+  disableCSSModules : true,
+  ignoreMomentLocale: true, // 忽略moment的locale
   publicPath : "./" ,
   svgSpriteLoaderDirs : svgSpriteDirs ,
   autoprefixer : {
@@ -28,19 +29,19 @@ export default {
       "iOS >= 8" ,
       "Android >= 4"
     ]
-  } ,
+  },
   proxy : {
     "/": {
       "target": "http://app.nefuer.net",
       "changeOrigin": true,
       "pathRewrite": { "^/" : "" }
     }
-  } ,
+  },
   extraPostCSSPlugins : [
     pxtorem( {
       rootValue : 100 ,
       propWhiteList : [] ,
-    } ) ,
+    }),
   ],
   // style 必须是 true
   extraBabelPlugins : [
@@ -58,6 +59,18 @@ export default {
         "dva-hmr"
       ]
     }
-  }
+  },
+  // dllPlugin: {
+  //   "exclude": [
+  //     "babel-runtime"
+  //   ],
+  //   "include": [
+  //     "dva/router",
+  //     "dva/saga",
+  //     "dva/fetch",
+  //     "react",
+  //     "react-dom",
+  //   ]
+  // }
 };
 
