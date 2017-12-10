@@ -1,6 +1,7 @@
 @pageDuration: 400ms;
 @toolbarDuration: 400ms;
 @navbarTitleSliding: 126.5px;
+
 .translate3d(@x:0, @y:0, @z:0) {
   -webkit-transform: translate3d(@x,@y,@z);
   transform: translate3d(@x,@y,@z);
@@ -35,7 +36,9 @@
     width: 100%;
     height: 100%;
     background: #efeff4;
-    .translate3d(0,0,0);
+
+    // .translate3d(0,0,0);
+
     &.cached {
         display: none;
     }

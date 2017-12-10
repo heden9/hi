@@ -5,13 +5,13 @@
     "react"
   ],
   "plugins": [
+    "babel-plugin-add-module-exports",
     "transform-runtime",
-    ["import", { "libraryName": "antd-mobile", "style": true }],
-    "react-hot-loader/babel" // 配置react的热更新
+    ["import", { "libraryName": "antd-mobile", "style": true }]
   ],
   "env": {
-    "development": {
-      "plugins": ["dva-hmr"]
-    }
+    "plugins": [
+      "dva-hmr"
+    ]
   }
 }

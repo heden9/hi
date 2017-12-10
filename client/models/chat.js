@@ -12,10 +12,10 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
-      socket.on('chat_received_msg', (data) => {
-        console.log(data);
-        dispatch({ type: 'receiveMsgFromServer', payload: { data } });
-      });
+      // socket.on('chat_received_msg', (data) => {
+      //   console.log(data);
+      //   dispatch({ type: 'receiveMsgFromServer', payload: { data } });
+      // });
     },
   },
 
