@@ -10,7 +10,7 @@ import classnames from 'classnames';
 import { createForm } from 'rc-form';
 import ReactDOM from 'react-dom';
 import dva, { connect } from 'dva';
-import router from 'dva/router';
+import * as router from 'dva/router';
 import saga from 'dva/saga';
 import antdM from 'antd-mobile';
 const { Button, Toast, Modal, TextareaItem, Badge, ListView, Carousel, Icon, ActivityIndicator, List, ImagePicker, InputItem } = antdM;
