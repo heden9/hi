@@ -25,7 +25,7 @@ export default {
       if (!result) {
         return;
       }
-      Toast.success('发布成功！');
+      Toast.success('发布成功！', undefined, undefined, undefined, false);
       setTimeout(() => {
         dialogClose('comment');
         put({ type: 'save', payload: { value: '' } });

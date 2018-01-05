@@ -37,7 +37,7 @@ export class ScrollView extends React.Component {
     };
     this.jroll = new JRoll(`#${wrappers}`, options);
     this.jroll.on('scrollEnd', () => {
-      if (this.jroll.y <= this.jroll.maxScrollY + 200) {
+      if (this.jroll.y <= this.jroll.maxScrollY + 1500) {
         this.props.onEndReached();
       }
     });

@@ -63,7 +63,7 @@ export default class Home extends React.Component {
     }
     const { dynamics, hasMore, offset } = data;
     if (now === 0) {
-      Toast.success(`已拉取${dynamics.length}条动态：）`, undefined, undefined, false);
+      Toast.success(`已拉取${dynamics.length}条动态：）`);
     }
     this.setState({
       dataSource: isRefresh ? dynamics : this.state.dataSource.concat(dynamics),

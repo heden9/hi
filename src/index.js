@@ -9,7 +9,7 @@ import createLoading from 'dva-loading';
 // 1. Initialize
 const app = dva(createLoading());
 
-
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 // 2. Plugins
 // app.use({});
 
