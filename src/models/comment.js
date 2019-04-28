@@ -1,6 +1,7 @@
 import { Toast } from 'antd-mobile';
 import { postComment } from '../services/api_dynamics';
 import { dialogClose } from '../components/dialog/test2';
+import { delay } from '../utils/delay';
 
 export default {
 
@@ -17,20 +18,18 @@ export default {
 
   effects: {
     *sendComment({ payload }, { call, put, select }) {  // eslint-disable-line
-      const data = yield select(({ write }) => (write.value));
+      const data = yield select(({ comment }) => (comment.value));
       if (!data.trim()) {
         return;
       }
-      const result = yield call(postComment, { content: data, ...payload });
+      const result = yield call(postComment, { content: data, dynamicId: payload.id });
       if (!result) {
         return;
       }
       Toast.success('发布成功！', undefined, undefined, undefined, false);
-      setTimeout(() => {
-        dialogClose('comment');
-        put({ type: 'save', payload: { value: '' } });
-      }, 100);
-      // yield
+      yield delay(100);
+      dialogClose('comment');
+      yield put({ type: 'save', payload: { value: '' } });
     },
   },
 

@@ -34,6 +34,15 @@ export function postDynamics(content, img = []) {
   });
 }
 
+export function postPics(id, url) {
+  return request('/pics', {
+    method: 'POST',
+    body: {
+      id,
+      url,
+    },
+  });
+}
 /**
  * 发布评论
  * @param content

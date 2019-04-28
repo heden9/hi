@@ -18,6 +18,7 @@ app.model(require('./models/user'));
 app.model(require('./models/write'));
 app.model(require('./models/comment'));
 app.model(require('./models/chat'));
+app.model(require('./models/dynamic'));
 
 // 4. Router
 app.router(require('./router'));

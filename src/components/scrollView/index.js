@@ -42,7 +42,6 @@ export class ScrollView extends React.Component {
       }
     });
     setTimeout(() => {
-      console.log('refresh');
       this.jroll.refresh();
     }, 0);
     Event.addEvent(`${wrappers}_scrollTo`, this.jroll.scrollTo.bind(this.jroll));

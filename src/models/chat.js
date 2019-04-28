@@ -1,10 +1,12 @@
 import { socket } from '../services/api_socket';
+import { getFollows } from '../services/api_user';
 
 export default {
 
   namespace: 'chat',
 
   state: {
+    follows: {},
     messageQ: [],
     unreadMsgQ: {},
     withId: '',
@@ -81,6 +83,17 @@ export default {
         }
       }
     },
+
+    *fetchFollows({ payload }, { call, put }) {
+      const follows = yield call(getFollows);
+      console.log(follows);
+      yield put({
+        type: 'saveFollows',
+        payload: {
+          follows,
+        },
+      });
+    },
   },
 
   reducers: {
@@ -110,6 +123,10 @@ export default {
           [data.sentId]: arr.concat(data),
         },
       };
+    },
+
+    saveFollows(state, { payload }) {
+      return { ...state, follows: payload.follows };
     },
   },
 

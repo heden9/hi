@@ -6,62 +6,62 @@ import Icon from '../../components/icon';
 import { NavOpen } from '../../components/AnimateNavios';
 import { ScrollView } from '../../components/scrollView';
 
-const info = {
-  A: [
-    {
-      id: 10,
-      headImgUrl: 'https://avatars1.githubusercontent.com/u/27012143?s=460&v=4',
-      nickname: '小禾登',
-    },
-    {
-      id: 2,
-      headImgUrl: 'https://tvax2.sinaimg.cn/crop.0.0.1242.1242.180/dbfd10fdly8fgqihfgx6yj20yi0yijv1.jpg',
-      nickname: '超想赢小垃圾',
-    },
-    {
-      id: 3,
-      headImgUrl: 'https://tvax1.sinaimg.cn/crop.0.0.512.512.180/006r2HqOly8fjq5zms72oj30e80e80vi.jpg',
-      nickname: '网易阴阳师',
-    },
-  ],
-  B: [
-    {
-      id: 13,
-      headImgUrl: 'https://tva3.sinaimg.cn/crop.0.0.996.996.180/006aysN4jw8f924ehkvtgj30ro0rp766.jpg',
-      nickname: 'InkCherry',
-    },
-    {
-      id: 5,
-      headImgUrl: 'https://tvax3.sinaimg.cn/crop.0.0.1242.1242.180/63abcab6ly8fhfn962k4hj20yi0yi782.jpg',
-      nickname: '萌萌哒狗贼叔叔',
-    },
-    {
-      id: 6,
-      headImgUrl: 'https://tva4.sinaimg.cn/crop.0.0.1242.1242.180/a920c789jw8fatzepmhzij20yi0yijtg.jpg',
-      nickname: '衣锦夜行',
-    },
-    {
-      id: 7,
-      headImgUrl: 'https://tvax3.sinaimg.cn/crop.0.0.996.996.180/005OxMBKly8fg4vexj8lgj30ro0rot9u.jpg',
-      nickname: '可爱小弱鸡',
-    },
-    {
-      id: 8,
-      headImgUrl: 'https://tva2.sinaimg.cn/crop.0.0.100.100.180/006imEXNjw8ey90nxwjp9j302s02s745.jpg',
-      nickname: '没时间回头看一眼',
-    },
-    {
-      id: 14,
-      headImgUrl: 'https://avatars1.githubusercontent.com/u/27012143?s=460&v=4',
-      nickname: '用户7',
-    },
-    {
-      id: 16,
-      headImgUrl: 'https://avatars1.githubusercontent.com/u/27012143?s=460&v=4',
-      nickname: '用户7',
-    },
-  ],
-};
+// const info = {
+//   A: [
+//     {
+//       id: 10,
+//       headImgUrl: 'https://avatars1.githubusercontent.com/u/27012143?s=460&v=4',
+//       nickname: '小禾登',
+//     },
+//     {
+//       id: 2,
+//       headImgUrl: 'https://tvax2.sinaimg.cn/crop.0.0.1242.1242.180/dbfd10fdly8fgqihfgx6yj20yi0yijv1.jpg',
+//       nickname: '超想赢小垃圾',
+//     },
+//     {
+//       id: 3,
+//       headImgUrl: 'https://tvax1.sinaimg.cn/crop.0.0.512.512.180/006r2HqOly8fjq5zms72oj30e80e80vi.jpg',
+//       nickname: '网易阴阳师',
+//     },
+//   ],
+//   B: [
+//     {
+//       id: 13,
+//       headImgUrl: 'https://tva3.sinaimg.cn/crop.0.0.996.996.180/006aysN4jw8f924ehkvtgj30ro0rp766.jpg',
+//       nickname: 'InkCherry',
+//     },
+//     {
+//       id: 5,
+//       headImgUrl: 'https://tvax3.sinaimg.cn/crop.0.0.1242.1242.180/63abcab6ly8fhfn962k4hj20yi0yi782.jpg',
+//       nickname: '萌萌哒狗贼叔叔',
+//     },
+//     {
+//       id: 6,
+//       headImgUrl: 'https://tva4.sinaimg.cn/crop.0.0.1242.1242.180/a920c789jw8fatzepmhzij20yi0yijtg.jpg',
+//       nickname: '衣锦夜行',
+//     },
+//     {
+//       id: 7,
+//       headImgUrl: 'https://tvax3.sinaimg.cn/crop.0.0.996.996.180/005OxMBKly8fg4vexj8lgj30ro0rot9u.jpg',
+//       nickname: '可爱小弱鸡',
+//     },
+//     {
+//       id: 8,
+//       headImgUrl: 'https://tva2.sinaimg.cn/crop.0.0.100.100.180/006imEXNjw8ey90nxwjp9j302s02s745.jpg',
+//       nickname: '没时间回头看一眼',
+//     },
+//     {
+//       id: 14,
+//       headImgUrl: 'https://avatars1.githubusercontent.com/u/27012143?s=460&v=4',
+//       nickname: '用户7',
+//     },
+//     {
+//       id: 16,
+//       headImgUrl: 'https://avatars1.githubusercontent.com/u/27012143?s=460&v=4',
+//       nickname: '用户7',
+//     },
+//   ],
+// };
 const { Item } = List;
 function genData(ds, data, unread) {
   const dataBlob = {};
@@ -81,13 +81,13 @@ function genData(ds, data, unread) {
   return ds.cloneWithRowsAndSections(dataBlob, sectionIDs, rowIDs);
 }
 
-class Demo extends React.PureComponent {
+class _Contact extends React.PureComponent {
   constructor(props) {
     super(props);
     const getSectionData = (dataBlob, sectionID) => dataBlob[sectionID];
     const getRowData = (dataBlob, sectionID, rowID) => dataBlob[rowID];
 
-    const dataSource = new ListView.DataSource({
+    this.dataSource = new ListView.DataSource({
       getRowData,
       getSectionHeaderData: getSectionData,
       rowHasChanged: (row1, row2) => row1 !== row2,
@@ -95,33 +95,36 @@ class Demo extends React.PureComponent {
     });
 
     this.state = {
-      dataSource: genData(dataSource, info, this.props.unreadMsgQ),
+      dataSource: genData(this.dataSource, props.follows, this.props.unreadMsgQ),
       refreshing: false,
     };
   }
 
   componentDidMount() {
+    this.props.dispatch({ type: 'chat/fetchFollows' });
   }
   componentWillReceiveProps(props) {
     this.setState({
-      dataSource: genData(this.state.dataSource, info, props.unreadMsgQ),
+      dataSource: genData(this.state.dataSource, props.follows, props.unreadMsgQ),
     });
   }
   componentWillUnmount() {
     clearTimeout(this.timer);
   }
-  onRefresh = () => {
-    this.setState({ refreshing: true });
-    // simulate initial Ajax
-    this.timer = setTimeout(() => {
-      this.setState({
-        dataSource: genData(this.state.dataSource, info),
-        refreshing: false,
-      });
-    }, 600);
-  };
+  // onRefresh = () => {
+  //   this.setState({ refreshing: true });
+  //   // simulate initial Ajax
+  //   this.timer = setTimeout(() => {
+  //     this.setState({
+  //       dataSource: genData(this.state.dataSource, info),
+  //       refreshing: false,
+  //     });
+  //   }, 600);
+  // };
   renderRow = ({ headImgUrl, nickname, id: rId, badge }) => {
     const { headImgUrl_me, id_me } = this.props;
+    // eslint-disable-next-line camelcase
+    const isMe = id_me === rId;
     function open() {
       NavOpen('chat', {
         title: nickname,
@@ -137,8 +140,8 @@ class Demo extends React.PureComponent {
         extra={<Badge text={badge} overflowCount={99} />}
         className={'contact-item'}
         thumb={headImgUrl}
-        arrow={'horizontal'}
-        onClick={open}
+        arrow={isMe ? 'none' : 'horizontal'}
+        onClick={isMe ? undefined : open}
       >{nickname}</Item>
     );
   };
@@ -166,15 +169,16 @@ class Demo extends React.PureComponent {
   }
 }
 
-function mapStateToProps({ user: { headImgUrl, id }, chat: { unreadMsgQ } }) {
+function mapStateToProps({ user: { headImgUrl, id }, chat: { unreadMsgQ, follows } }) {
   return {
     headImgUrl_me: headImgUrl,
     id_me: id,
     unreadMsgQ,
+    follows,
   };
 }
 
-const Contact = connect(mapStateToProps)(Demo);
+const Contact = connect(mapStateToProps)(_Contact);
 Contact.rightBtn = () => {
   return (
     <Icon

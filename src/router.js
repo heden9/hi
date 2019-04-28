@@ -15,9 +15,7 @@ import Write from './routes/write';
 import Comment from './routes/comment';
 import Forward from './routes/forward';
 import Mine from './routes/mine';
-// import Map from './routes/map';
-
-let Map = () => <div>map</div>; // eslint-disable-line
+import Map from './routes/map';
 
 const dialogConfig = {
   signIn: {

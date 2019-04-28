@@ -40,7 +40,7 @@ class Dialog extends React.Component {
     });
   };
   render() {
-    const { title, rightBtn, component: WrapComponent } = this.props;
+    const { title, rightBtn, component: WrapComponent, componentProps = {} } = this.props;
     return createPortal(
       <div
         ref={(ref) => { this.dialog = ref; }}
@@ -51,12 +51,12 @@ class Dialog extends React.Component {
         })}
       >
         <Headers
-          rightBtn={rightBtn}
+          rightBtn={rightBtn ? React.cloneElement(rightBtn, componentProps) : rightBtn}
           leftBtn={<span onClick={this.closeHandle}>关闭</span>}
           title={title}
         />
         <div className="dialog-body">
-          <WrapComponent closeHandle={this.closeHandle} />
+          <WrapComponent closeHandle={this.closeHandle} {...componentProps} />
         </div>
       </div>,
       this.node,
@@ -65,6 +65,7 @@ class Dialog extends React.Component {
 }
 
 Dialog.propTypes = {
+  componentProps: PropTypes.object,
   component: PropTypes.func,
   title: PropTypes.string,
   rightBtn: PropTypes.element,
@@ -84,23 +85,26 @@ class MixinDialog extends React.Component {
   componentWillUnmount() {
     Event.removeEvent('_dialog_open');
   }
-  open = (url) => {
+  open = (url, props) => {
     this.setState({
-      stack: this.state.stack.concat(url),
+      stack: this.state.stack.concat({
+        url, props,
+      }),
     });
   };
   close = (url) => {
     this.setState({
-      stack: this.state.stack.filter(item => item === url),
+      stack: this.state.stack.filter(item => item.url === url),
     });
   };
   render() {
     return this.state.stack.map((item) => {
-      const ele = this.props.routes[item];
+      const ele = this.props.routes[item.url];
       if (ele) {
         return (
           <Dialog
             {...ele}
+            componentProps={item.props}
             superClose={url => this.close(url)}
             key={item}
           />

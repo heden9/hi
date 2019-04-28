@@ -4,21 +4,16 @@ import { TextareaItem, ActivityIndicator, ImagePicker } from 'antd-mobile';
 import ToolBar from '../../components/toolBar';
 import './style.less';
 
-class write extends React.Component {
-  state = {
-    files: [],
-  };
+class write extends React.PureComponent {
   changeHandle = (value) => {
     this.props.dispatch({ type: 'write/save', payload: { value } });
   };
   uploadHandle = (files, type, index) => {
     console.log(files, type, index);
-    this.setState({
-      files,
-    });
+    this.props.dispatch({ type: 'write/save', payload: { files } });
   };
   render() {
-    const { files } = this.state;
+    const { files } = this.props;
     return (
       <div className="write-container">
         <TextareaItem
@@ -53,9 +48,10 @@ function SendBtn({ dispatch, loading }) {
   }
 }
 
-function mapStateToProps({ write: { value } }) {
+function mapStateToProps({ write: { value, files } }) {
   return {
     value,
+    files,
   };
 }
 

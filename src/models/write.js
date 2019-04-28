@@ -10,6 +10,7 @@ export default {
 
   state: {
     value: '',
+    files: [],
   },
 
   subscriptions: {

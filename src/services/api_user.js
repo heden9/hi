@@ -17,3 +17,9 @@ export function checkLogin() {
     method: 'POST',
   });
 }
+
+export function getFollows() {
+  return request('/follows', {
+    method: 'GET',
+  });
+}

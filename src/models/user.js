@@ -17,19 +17,17 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       socket.on('connect', () => {
-        console.log('connect');
-        // Toast.fail('连接成功~', 2);
+        console.log('chat connect');
+        Toast.success('聊天室连接成功~', 2);
       });
       socket.on('disconnect', () => {
-        console.log('dis');
+        console.log('chat disconnect');
       });
       socket.on('receive_message', (data) => {
         console.log(data);
       });
-      socket.on('login_feedback', () => {
-        // console.log(data);
-        // window.common.writeStorage('token', data.token);
-        // dispatch({ type: 'save', payload: { ...data } });
+      socket.on('login_feedback', (data) => {
+        console.log(data);
       });
     },
   },

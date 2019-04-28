@@ -1,10 +1,11 @@
 import React from 'react';
+import { connect } from 'dva';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { List, Button, Toast, ActivityIndicator } from 'antd-mobile';
 import Icon from '../../components/icon';
 import './style.less';
-import { getDynamics, dynamicLikes } from '../../services/api_dynamics';
+import { dynamicLikes } from '../../services/api_dynamics';
 import { NavOpen } from '../../components/AnimateNavios';
 import { dialogOpen } from '../../components/dialog/test2';
 import Event from '../../components/dialog/event';
@@ -12,79 +13,54 @@ import ListView from '../../components/scrollView';
 
 const Item = List.Item;
 
+function mapStateToProps({ dynamic, loading }) {
+  return {
+    dataSource: dynamic.dataSource,
+    loading: loading.effects['dynamic/fetchDynamic'],
+    refreshing: dynamic.refreshing,
+    hasMore: !!dynamic.hasMore,
+  };
+}
 
-export default class Home extends React.Component {
-  constructor(props) {
-    super(props);
-    this.fetchData = this.fetchData.bind(this);
-    this.state = {
-      dataSource: [],
-      isLoading: true,
-      offset: 0,
-      hasMore: 1,
-      refreshing: false,
-    };
-  }
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchDynamic(refresh) {
+      dispatch({ type: 'dynamic/fetchDynamic', payload: { refresh } });
+    },
+  };
+}
 
+class Home extends React.Component {
   componentDidMount() {
-    // you can scroll to the specified position
-    // setTimeout(() => this.lv.scrollTo(0, 120), 800);
-
-    // simulate initial Ajax
-    this.fetchData();
+    this.props.fetchDynamic();
     Event.addEvent('_list_refresh', this.onRefresh);
   }
 
   onEndReached = () => {
-    // load new data
-    // hasMore: from backend data, indicates whether it is the last page, here is false
-    if (this.state.isLoading || !this.state.hasMore) {
+    if (this.props.loading || !this.props.hasMore) {
       return;
     }
-    this.setState({ isLoading: true });
-    this.fetchData(this.state.offset);
+    this.props.fetchDynamic();
   };
   onRefresh = () => {
-    if (this.state && this.state.refreshing || this.state.isLoading) {
+    if (this.props.refreshing || this.props.loading) {
       return;
     }
-    this.setState({ refreshing: true });
-    // simulate initial Ajax
     Event.fireEvent('wrappers_scrollTo', 0, 0);
-    this.fetchData(0, true);
+    this.props.fetchDynamic(true);
   };
-  async fetchData(now = 0, isRefresh = false) {
-    const data = await getDynamics({ offset: now });
-    if (!data) {
-      this.setState({
-        isLoading: false,
-      });
-      return;
-    }
-    const { dynamics, hasMore, offset } = data;
-    if (now === 0) {
-      Toast.success(`已拉取${dynamics.length}条动态：）`);
-    }
-    this.setState({
-      dataSource: isRefresh ? dynamics : this.state.dataSource.concat(dynamics),
-      offset,
-      hasMore: !!hasMore,
-      isLoading: false,
-      refreshing: false,
-    });
-  }
   renderFooter = isLoading => (
     <div
       className="home-footer"
     >{isLoading ? <ActivityIndicator text="正在加载" /> : '我也是有底线的'}</div>
   );
   render() {
-    const { dataSource, isLoading, refreshing } = this.state;
+    const { dataSource, loading, refreshing } = this.props;
     return [
       refreshing ? <div className="center" key={1}><ActivityIndicator text="正在刷新" /></div> : null,
       <ListView
         key={2}
-        isLoading={isLoading}
+        isLoading={loading}
         onEndReached={this.onEndReached}
         renderFooter={this.renderFooter}
         dataSource={dataSource}
@@ -134,7 +110,7 @@ const Row = (prop) => {
           icon={<Icon type={require('../../assets/icon/forward.svg')} />}
         >转发</Button>
         <Button
-          onClick={openComment}
+          onClick={e => openComment(e, prop)}
           size={'small'}
           icon={<Icon type={require('../../assets/icon/comment.svg')} />}
         >{ commentNum || '评论'}</Button>
@@ -153,9 +129,9 @@ Home.leftBtn = () => {
 
 Home.Row = Row;
 
-function openComment(e) {
+function openComment(e, prop) {
   e.stopPropagation();
-  dialogOpen('comment');
+  dialogOpen('comment', prop);
 }
 function openForward(e) {
   e.stopPropagation();
@@ -230,3 +206,5 @@ WrapButton.propTypes = {
   likeNum: PropTypes.number.isRequired,
   isLike: PropTypes.bool.isRequired,
 };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

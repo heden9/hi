@@ -27,9 +27,9 @@ class comment extends React.Component {
 }
 
 
-function SendBtn({ dispatch }) {
+function SendBtn({ dispatch, ...props }) {
   return (
-    <div onClick={dispatch.bind(null, { type: 'comment/sendComment' })}>发送</div>
+    <div onClick={dispatch.bind(null, { type: 'comment/sendComment', payload: props })}>发送</div>
   );
 }
 

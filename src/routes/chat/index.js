@@ -8,11 +8,20 @@ import Event from '../../components/dialog/event';
 
 class Chat extends React.PureComponent {
   componentDidMount() {
-    console.log(this.props);
     this.props.initMsg();
   }
+  componentWillReceiveProps() {
+    // 第一次进入不展示动画，收发消息展示动画
+    if (!this.count) {
+      this.count = 0;
+    }
+    if (this.count === 1) {
+    // eslint-disable-next-line no-underscore-dangle
+      this._new = true;
+    }
+    this.count ++;
+  }
   componentDidUpdate() {
-    console.log('update');
     // Event.fireEvent(`chat_${this.props.received.id}_refresh`);
     Event.fireEvent(`chat_${this.props.received.id}_scrollToBottom`);
   }
@@ -29,9 +38,12 @@ class Chat extends React.PureComponent {
         <ScrollView ID={`chat_${this.props.received.id}`}>
           <div className="chat-container">
             {
-              messageQ.map(({ type, messages, time }) => {
+              messageQ.map(({ type, messages, time }, index) => {
+                // eslint-disable-next-line no-underscore-dangle
+                const latest = this._new && index === messageQ.length - 1;
                 return (
                   <MessageBox
+                    latest={latest}
                     text={messages}
                     time={time}
                     headImgUrl={this.props[type].headImgUrl}

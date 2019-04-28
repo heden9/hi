@@ -5,11 +5,12 @@ import './style.less';
 const moment = require('moment');
 
 
-export default function MessageBox({ type = 'sent', headImgUrl, text, time }) {
+export default function MessageBox({ type = 'sent', headImgUrl, text, time, latest = false }) {
   return (
     <div
       className={classnames({
         message: true,
+        latest,
         [`message-${type}`]: true,
       })}
     >
