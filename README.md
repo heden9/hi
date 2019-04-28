@@ -9,7 +9,10 @@
 ```
 
 ```bash
+  # start socket
   yarn run start
+  # start project
+  yarn run dev
 ```
 
 ### 截图
