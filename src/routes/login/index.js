@@ -16,18 +16,16 @@ class BasicInputExample extends React.Component {
     const { getFieldProps } = this.props.form;
     return (
       <div>
-        <List renderHeader={() => 'Customize to focus'}>
+        <List>
           <InputItem
             {...getFieldProps('username')}
             clear
-            placeholder="auto focus"
             ref={(el) => { this.autoFocusInst = el; }}
           >账号</InputItem>
           <InputItem
             {...getFieldProps('password')}
             clear
             type={'password'}
-            placeholder="click the button below to focus"
           >密码</InputItem>
           <Button onClick={this.submit}>登录</Button>
         </List>
